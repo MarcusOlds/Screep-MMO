@@ -12,7 +12,7 @@ var roleDropHarvester = require('role.dropharvester');
 var roleAttacker = require('role.attacker');
 var buildScreeps = require('build.screeps');
 
-
+//room 1 Spawner
 var Spawn1={
     spawnName: "Spawn1",
     numHarvesters: 0,
@@ -24,6 +24,7 @@ var Spawn1={
     numDropHarvesters: 4,
     numAttackers: 3
 }
+//room 2 spawner
 var Spawn2={
     spawnName: "Spawn2",
     numHarvesters: 0,
@@ -35,10 +36,10 @@ var Spawn2={
     numDropHarvesters: 0,
     numAttackers: 0
 }
-
+//put all rooms into an array
 var spawnRooms = [Spawn1, Spawn2];
 
-
+//set max wall and rampart health to stop maintainance creeps from wasting all energy on just increasing wall strenght
 var wallStrengthGoal = 500000;
 var rampartStenghtGoal = 3000000;
 
