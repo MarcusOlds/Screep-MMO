@@ -62,7 +62,6 @@ module.exports.loop = function () {
         buildScreeps.run("attacker", spawnRoom.numAttackers, spawnRoom.spawnName,energyAvailableInRoom);
         buildScreeps.run('drop harvester', spawnRoom.numDropHarvesters,spawnRoom.spawnName, energyAvailableInRoom);
         buildScreeps.run("stocker", spawnRoom.numStockers,spawnRoom.spawnName, energyAvailableInRoom);
-        buildScreeps.run("attacker", spawnRoom.numAttackers,spawnRoom.spawnName, energyAvailableInRoom);
     });
 
     //check for dead creeps that still have something in memory

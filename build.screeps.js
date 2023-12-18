@@ -8,8 +8,12 @@ var buildScreeps = {
     run: function(role, numRole,spawnName,energyAvailableInRoom) {
         //get the number of screeps in role and room
         var screepsInRole = _.filter(Game.creeps, (creep) => creep.memory.role == role &&
-            creep.memory.homeroom == Game.spawns[spawnName].pos.roomName);
-        console.log(screepsInRole.length + '/' + numRole + ' ' + role);
+        creep.memory.homeroom == Game.spawns[spawnName].pos.roomName);
+        
+        //if creeps in role are not equal to the number desired then log to console
+        if(screepsInRole.length != numRole){
+            console.log(screepsInRole.length + '/' + numRole + ' ' + role);
+        }
         if(screepsInRole.length < numRole) {
             //set body parts of screep depending on role
             switch(role){
