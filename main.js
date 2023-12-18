@@ -1,5 +1,9 @@
+//planned future feateure
 var defenseMode = false;
+//used for troubleshooting scripts to emergency stop all creeps in case of issues/errors
 var emergencyStop = false;
+
+//importing all modules required for main loop
 var roleSpawner = require('role.spawner');
 var roleTower = require('role.tower');
 var roleHarvester = require('role.harvester');
@@ -12,7 +16,7 @@ var roleDropHarvester = require('role.dropharvester');
 var roleAttacker = require('role.attacker');
 var buildScreeps = require('build.screeps');
 
-//room 1 Spawner
+//room 1 desired creeps by role
 var Spawn1={
     spawnName: "Spawn1",
     numHarvesters: 0,
@@ -24,7 +28,7 @@ var Spawn1={
     numDropHarvesters: 4,
     numAttackers: 3
 }
-//room 2 spawner
+//room 1 desired creeps by role
 var Spawn2={
     spawnName: "Spawn2",
     numHarvesters: 0,
@@ -46,7 +50,7 @@ var rampartStenghtGoal = 3000000;
 module.exports.loop = function () {
     //log tick time
     console.log(Game.time)
-    //create screeps as needed
+    //create screeps as needed per room
     spawnRooms.forEach(function (spawnRoom, index){
         var energyAvailableInRoom = Game.spawns[spawnRoom.spawnName].room.energyAvailable;
         console.log('Energy Available in '+ spawnRoom.spawnName + " " + energyAvailableInRoom)
@@ -61,7 +65,7 @@ module.exports.loop = function () {
         buildScreeps.run("attacker", spawnRoom.numAttackers,spawnRoom.spawnName, energyAvailableInRoom);
     });
 
-   
+    //check for dead creeps that still have something in memory
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
             //console.log(Memory.creeps[name].harvestinfo.totalHarvested);
@@ -70,15 +74,20 @@ module.exports.loop = function () {
         }
     }
 
-    //spawner check for creeps near by to heal
+    //spawner check for creeps near by to renew them
     roleSpawner.CheckForRenew();
 
+    //tower logic 
+    //needs a lot of work its still not dynamic at all
     var towers = Game.spawns['Spawn1'].room.find(FIND_MY_STRUCTURES,{filter:{ structureType: STRUCTURE_TOWER}})
     roleTower.run(towers[0],wallStrengthGoal,rampartStenghtGoal);
     roleTower.run(towers[1],wallStrengthGoal,rampartStenghtGoal);
     towers = Game.spawns['Spawn2'].room.find(FIND_MY_STRUCTURES,{filter:{ structureType: STRUCTURE_TOWER}})
     roleTower.run(towers[0],wallStrengthGoal,rampartStenghtGoal);
+
+    //if emergencyStop is true then no roles will be processed and all creeps will freeze
     if(!(emergencyStop)){
+        //execute logic on creeps based on their roles
         for(var name in Game.creeps) {
             var creep = Game.creeps[name];
             if(creep.memory.role == 'harvester') {

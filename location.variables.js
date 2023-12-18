@@ -1,4 +1,6 @@
 /*
+NOT CURRENTLY BEING USED FOR ANYTHING
+INTENDED FOR FUTURE IMPLEMENTATION
 the point of this module is to assign important locations to the memory of a screep depending on their role and their assigned number for that role
 this is intended to be a permanent assignment for the life of a screep.
 Each screep I am thinking will have three variables in mem at build time

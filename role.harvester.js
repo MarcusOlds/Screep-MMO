@@ -3,7 +3,7 @@ var harvestTarget = require('harvest.target');
 var roleHarvester = {
 
     /** @param {Creep} creep **/
-    
+    //none drop harvester style harvester....I do not not use this anymore
     run: function(creep) {
         
 	    if(creep.store.getUsedCapacity() == 0) {

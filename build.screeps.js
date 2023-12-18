@@ -1,4 +1,5 @@
 /*
+ * any room specific names and locations here will need to be changed out for generic use, I will eventually code these all to be dynamic once I have completed the logic using hard coded rooms and locations.
  * memory.role = string
  * memory.number = int
  * memory.needsAssignment = bool (This will start as true and switch once assignment below is made)
@@ -10,7 +11,7 @@ var buildScreeps = {
             creep.memory.homeroom == Game.spawns[spawnName].pos.roomName);
         console.log(screepsInRole.length + '/' + numRole + ' ' + role);
         if(screepsInRole.length < numRole) {
-            //set body
+            //set body parts of screep depending on role
             switch(role){
                 case 'attacker':
                     var bodyParts = [];
@@ -113,6 +114,9 @@ var buildScreeps = {
                     break;
             }
             //set energy Needs
+            //not really used right now but has intended uses in the future
+            //example, if I know I need a drop harvester and a stocker to restart economy after a fight, calculating the costs of both before commiting to the body parts above will be useful
+            //in order to save enough energy to build both back to back
             var energyNeeded = 0;
             bodyParts.forEach(function (item, index){
                 switch(item){
@@ -233,6 +237,10 @@ var buildScreeps = {
                     var found = screepsInRoleNumbersExisting.find((element) => element == i)
                     if(found == undefined){
                         memory['number'] = i;
+                        //set I to huge number to stop for loop to escape the for loop
+                        //this stops the assigned number from always being the largest unassigned number which is the inverse of what I want
+                        //probably can be handled better by reversing the logic of the for loop but then that would equal extra computation time
+                        //dirty is faster in this scenario
                         i = i + 1000000;
                     }
                 }

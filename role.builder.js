@@ -1,15 +1,15 @@
-//has been set to use containers instead of harvesting
+//required modules
 var processTarget = require('process.targets');
 var harvestTarget = require('harvest.target');
 var roleBuilder = {
     /** @param {Creep} creep **/
     run: function(creep) {
-        //creep is building but runs our of resources
+        //creep is building but runs out of resources so set building to false
 	    if(creep.memory.building && creep.store[RESOURCE_ENERGY] == 0) {
 	        creep.memory.building = false;
-            creep.say('🔄 harvest');
+            creep.say('🔄 Empty');
 	    }
-	    //creep is mining but is full
+	    //creep is mining or picking up but is full
 	    if(!creep.memory.building && creep.store.getFreeCapacity() == 0) {
 	        creep.memory.building = true;
             creep.memory.pickingup = false;
@@ -21,6 +21,7 @@ var roleBuilder = {
 	    if(creep.memory.building == true) {
             var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
             //if no targets move to another room to look for a construction site
+            //terrible terrible logic, needs to be fixed but have higher priorities
             if(!(target)){
                 if(!(creep.memory.targetRoom)){
                     if(creep.pos.roomName == 'W3S27'){
@@ -49,9 +50,7 @@ var roleBuilder = {
                 */
                 //if moving rooms to find a construction site
                 if(creep.memory.targetRoom){
-                    //console.log(JSON.stringify(new RoomPosition(25,25,'W3S27')))
-                    //console.log(JSON.stringify(creep.memory.targetRoom))
-                    //if you are in teh right room delete the room target to start working on construction
+                    //if you are in the right room delete the room target to start working on construction
                     if(creep.memory.targetRoom.roomName == creep.pos.roomName && creep.pos.x == creep.memory.targetRoom.x && creep.pos.y == creep.memory.targetRoom.y){
                         delete creep.memory.targetRoom;
                     //otherwise keep moving towards the targeted room
@@ -83,41 +82,25 @@ var roleBuilder = {
             if(target){
                 processTarget.pickupResource(creep,target);
             };
-	        //if creep is not building check for full containers
-            var targetContainer = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                    filter: (structure) => {
-                        return (structure.structureType == STRUCTURE_STORAGE) && 
-                                structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0;
-                    }
-            });
+	        //if creep is not building check for storage with enough energy to fill up creep
+            var targetContainer = processTarget.findClosestStorageWithEnergy(creep,creep.store.getFreeCapacity());
+            //set variables for the container
             if(targetContainer){
                 creep.memory.harvestinfo.targetContainer = targetContainer.id;
                 creep.memory.pickingup = true;
             }
+            //if not storage available then check for containers with space
+            if(!(targetContainer)){
+                var targetContainer = processTarget.findClosestContainerWithEnergy(creep);
+            }
+            //if a target was found withdraw or move to the storage
             if (creep.memory.pickingup){
-                if(creep.withdraw(targetContainer, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targetContainer,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});
-                }
+                processTarget.withdrawEnergy(creep,targetContainer);
+                //check if its full after and set to no longer picking up if it is
                 if(creep.store.getFreeCapacity == 0){
                     creep.memory.pickingup = false;
                 }
                 //if there are no full containers
-            }else {
-                if(!(creep.memory.harvestinfo.harvesting)){
-                    harvestTarget.run(creep);
-                    creep.memory.pickingup = false;
-                }
-                if(creep.memory.harvestinfo.harvestsource != -1){
-                    harvestSourceLocation = new RoomPosition(creep.memory.harvestinfo.harvestsourcelocation.x, creep.memory.harvestinfo.harvestsourcelocation.y, creep.memory.harvestinfo.harvestsourcelocation.roomName)
-                    if(creep.memory.harvestinfo.harvestsource == -1 && creep.memory.harvestinfo.harvesting){
-                        creep.moveTo(harvestSourceLocation,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}})
-                    } else if(creep.harvest(Game.getObjectById(creep.memory.harvestinfo.harvestsourceid)) == ERR_NOT_IN_RANGE || 
-                        creep.harvest(Game.getObjectById(creep.memory.harvestinfo.harvestsourceid)) == ERR_NOT_FOUND || 
-                        creep.harvest(Game.getObjectById(creep.memory.harvestinfo.harvestsourceid)) == ERR_INVALID_TARGET && 
-                        creep.memory.harvestinfo.harvesting) {
-                            creep.moveTo(harvestSourceLocation,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});
-                    }
-                }
             }
 	    }
 	}
