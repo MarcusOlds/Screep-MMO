@@ -69,11 +69,9 @@ var buildScreeps = {
                     if(energyAvailableInRoom > 300){
                         bodyParts.push(MOVE);
                         energyLeft = energyLeft - 50;
-                        var workParts = 0;
-                        while (energyLeft >= 100 && workParts <= 10){
+                        while (energyLeft >= 100 && bodyParts.length <= 50){
                             bodyParts.push(WORK);
                             energyLeft = energyLeft - 100;
-                            workParts++
                         }
                     }else{
                         bodyParts.push(WORK,WORK,MOVE);
@@ -87,14 +85,9 @@ var buildScreeps = {
                     var energyLeft = energyAvailableInRoom;
                     //dynamic Production of Stockers to ensure no break down of economy and colony fallout
                     if(energyAvailableInRoom > 300){
-                        bodyParts.push(MOVE);
-                        energyLeft = energyLeft - 50;
-                        var workParts = 0;
-                        while (energyLeft >= 150 && workParts <= 16){
+                        while (energyLeft >= 150 && bodyParts.length <= 50){
                             bodyParts.push(CARRY,CARRY,MOVE);
                             energyLeft = energyLeft - 150;
-                            workParts++;
-                            workParts++;
                         }
                     }else{
                         bodyParts.push(CARRY,CARRY,CARRY,CARRY,MOVE,MOVE);
@@ -106,11 +99,9 @@ var buildScreeps = {
                     var energyLeft = energyAvailableInRoom;
                     //dynamic Production of Stockers to ensure no break down of economy and colony fallout
                     if(energyAvailableInRoom > 400){
-                        var workParts = 0;
-                        while (energyLeft >= 200 && workParts <= 50){
+                        while (energyLeft >= 200 && bodyParts.length <= 50){
                             bodyParts.push(WORK,CARRY,MOVE);
                             energyLeft = energyLeft - 200;
-                            workParts = workParts + 3;
                         }
                     }else{
                         var bodyParts = [WORK,CARRY,MOVE];
@@ -189,6 +180,7 @@ var buildScreeps = {
                         var extensionFocused = 0;
                         //get number of screeps in each subrole
                         screepsInRole.forEach(function (item, index){
+                            console.log(JSON.stringify(item.memory.subrole));
                             screepsInSubRoleExisiting.push(item.memory.subrole);
                         });
                         //count the screeps in each subrole
@@ -205,13 +197,13 @@ var buildScreeps = {
                                     break;
                             }
                         });
-                        if(towerFocused < storageFocused && towerFocused < extensionFocused){
+                        if((towerFocused < storageFocused && towerFocused < extensionFocused) || towerFocused == 0){
                             memory['subrole'] = "tower";
                             break;
-                        }else if(storageFocused < towerFocused && storageFocused < extensionFocused){
+                        }else if((storageFocused < towerFocused && storageFocused < extensionFocused) || storageFocused == 0){
                             memory['subrole'] = 'storage';
                             break;
-                        }else if(extensionFocused < towerFocused && extensionFocused < storageFocused){
+                        }else if((extensionFocused < towerFocused && extensionFocused < storageFocused) || extensionFocused == 0){
                             memory['subrole'] = "extension";
                             break;
                         }else {
