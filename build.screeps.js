@@ -66,7 +66,7 @@ var buildScreeps = {
                     var bodyParts = [];
                     var energyLeft = energyAvailableInRoom;
                     //dynamic production of harvest to ensure no break down in harvesting and eventual colony fallout
-                    if(energyAvailableInRoom < 1300 && energyAvailableInRoom > 300){
+                    if(energyAvailableInRoom > 300){
                         bodyParts.push(MOVE);
                         energyLeft = energyLeft - 50;
                         var workParts = 0;
