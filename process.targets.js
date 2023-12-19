@@ -29,6 +29,7 @@ var getTarget = {
         return target;
     },
 
+    //find closest storage with energy in it
     findClosestStorageWithEnergy: function(object, minAmount){
         var target = object.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: (structure) => {
@@ -72,7 +73,7 @@ var getTarget = {
         var target = object.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_TOWER) && 
-                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 500;
             }
         }); 
         return target;

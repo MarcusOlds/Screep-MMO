@@ -8,7 +8,7 @@ var roleAttacker = {
         //Essentally standing guard at this location
         if(creep.memory.number == 0){
             //var attackZone = new RoomPosition(32,15,'W3S27');
-            var attackZone = new RoomPosition(33,31,'W3S26');
+            var attackZone = new RoomPosition(31,37,'W3S26');
         }
         if(creep.memory.number == 1){
             var attackZone = new RoomPosition(32,15,'W3S27');

@@ -78,6 +78,7 @@ var roleBuilder = {
             }
         //while creep is not building and looking for energy
 	    }else {
+            creep.memory.pickingup = true;
             var target = processTarget.findClosestDroppedResource(creep,50);
             if(target){
                 processTarget.pickupResource(creep,target);
@@ -87,20 +88,26 @@ var roleBuilder = {
             //set variables for the container
             if(targetContainer){
                 creep.memory.harvestinfo.targetContainer = targetContainer.id;
-                creep.memory.pickingup = true;
             }
             //if not storage available then check for containers with space
             if(!(targetContainer)){
-                var targetContainer = processTarget.findClosestContainerWithEnergy(creep);
+                var targetContainer = processTarget.findClosestContainerWithEnergy(creep,5);
             }
             //if a target was found withdraw or move to the storage
             if (creep.memory.pickingup){
                 processTarget.withdrawEnergy(creep,targetContainer);
-                //check if its full after and set to no longer picking up if it is
-                if(creep.store.getFreeCapacity == 0){
-                    creep.memory.pickingup = false;
-                }
                 //if there are no full containers
+            }
+            //find resources lying on ground
+            if(!(targetContainer)){
+                var droppedResource = processTarget.findClosestDroppedResource(creep,10);
+            }
+            if(droppedResource){
+                processTarget.pickupResource(creep,droppedResource);
+            }
+            //check if its full after and set to no longer picking up if it is
+            if(creep.store.getFreeCapacity == 0){
+                creep.memory.pickingup = false;
             }
 	    }
 	}
