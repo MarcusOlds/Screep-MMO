@@ -16,33 +16,44 @@ var roleStocker = {
 	        if(!(creep.memory.pickingup)){
 	            creep.memory.pickingup = true;
 	        }
-            //find closest dropped resource as priority because they decay
-	        var target = processTargets.findClosestDroppedResource(creep,50);
-            if(target) {
-                processTargets.pickupResource(creep,target);
+            switch(creep.memory.subrole){
+                case 'storage':
+                    //find closest dropped resource as priority because they decay
+                    var target = processTargets.findClosestDroppedResource(creep,50);
+                    if(target) {
+                        processTargets.pickupResource(creep,target);
+                    }
+                    //find closest ruin with resources
+                    if(!(target)){
+                        target = processTargets.findClosestRuinWithResources(creep);
+                        if(target) {
+                            processTargets.withdrawResources(creep,target);
+                        }
+                    }
+                    //find teh closest tombstone with resources in it
+                    if(!(target)){
+                        target = processTargets.findClosestTombstoneWithResources(creep);
+                        if(target) {
+                            processTargets.withdrawResources(creep,target);
+                        }
+                    }
+                    //find the closest container with resources in it
+                    if(!(target)){
+                        //if there is no dropped resources find a container with some energy in it
+                        var target = processTargets.findClosestContainerWithEnergy(creep,100);
+                        if(target){
+                            processTargets.withdrawResources(creep,target);
+                        }
+                    }
+                    break;
+                case 'tower':
+                case 'extension':
+                    var target = processTargets.findClosestStorageWithEnergy(creep,100);
+                    if(target){
+                        processTargets.withdrawResources(creep,target);
+                    }
             }
-            //find closest ruin with resources
-            if(!(target)){
-                target = processTargets.findClosestRuinWithResources(creep);
-                if(target) {
-                    processTargets.withdrawResources(creep,target);
-                }
-            }
-            //find teh closest tombstone with resources in it
-            if(!(target)){
-                target = processTargets.findClosestTombstoneWithResources(creep);
-                if(target) {
-                    processTargets.withdrawResources(creep,target);
-                }
-            }
-            //find the closest container with resources in it
-            if(!(target)){
-                //if there is no dropped resources find a container with some energy in it
-                var target = processTargets.findClosestContainerWithEnergy(creep,100);
-                if(target){
-                    processTargets.withdrawResources(creep,target);
-                }
-            }
+
             //if creep is full turn off pickingup
             if(creep.store.getFreeCapacity() == 0){
                 creep.memory.delivering = true;

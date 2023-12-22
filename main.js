@@ -1,5 +1,7 @@
 //planned future feateure
 var defenseMode = false;
+//used to reset game memory
+var initialize = false;
 //used for troubleshooting scripts to emergency stop all creeps in case of issues/errors
 var emergencyStop = false;
 
@@ -20,13 +22,15 @@ var buildScreeps = require('build.screeps');
 //if needing to reset this for anyreason delete the spawnRooms from Memory by running:
 //delete Memory.spawnRooms
 //after which this will run again and use the below values as your new default
-if(!(Memory.spawnRooms)){
+if(initialize){
     var Spawn1={
         spawnName: "Spawn1",
         numHarvesters: 0,
         numUpgraders: 1,
         numBuilders: 0,
-        numStockers: 3,
+        numStockers: 2,
+        numTowerStockers: 1,
+        numExtensionStockers: 1,
         numMaintainers: 3,
         numClaimers: 1,
         numDropHarvesters: 4,
@@ -38,7 +42,9 @@ if(!(Memory.spawnRooms)){
         numHarvesters: 0,
         numUpgraders: 1,
         numBuilders: 1,
-        numStockers: 3,
+        numStockers: 2,
+        numTowerStockers: 1,
+        numExtensionStockers: 1,
         numMaintainers: 1,
         numClaimers: 0,
         numDropHarvesters: 0,
@@ -48,13 +54,15 @@ if(!(Memory.spawnRooms)){
     var spawnRooms = [Spawn1, Spawn2];
     Memory.spawnRooms = spawnRooms; 
 }
-
-var spawnRooms = Memory.spawnRooms;
-//set max wall and rampart health to stop maintainance creeps from wasting all energy on just increasing wall strenght
-var wallStrengthGoal = 100000;
-var rampartStenghtGoal = 3000000;
+if(initialize){
+    //set max wall and rampart health to stop maintainance creeps from wasting all energy on just increasing wall strength
+    Memory.minMaxes = {wallStrengthGoal: 110000, rampartStengthGoal: 3000000};
+}
 
 module.exports.loop = function () {
+    var spawnRooms = Memory.spawnRooms;
+    var wallStrengthGoal = Memory.minMaxes.wallStrengthGoal;
+    var rampartStenghtGoal = Memory.minMaxes.rampartStengthGoal;
     //log tick time
     var gameTime = Game.time
     console.log(Game.time)
@@ -71,6 +79,8 @@ module.exports.loop = function () {
             buildScreeps.run("attacker", spawnRoom.numAttackers, spawnRoom.spawnName,energyAvailableInRoom);
             buildScreeps.run('drop harvester', spawnRoom.numDropHarvesters,spawnRoom.spawnName, energyAvailableInRoom);
             buildScreeps.run("stocker", spawnRoom.numStockers,spawnRoom.spawnName, energyAvailableInRoom);
+            buildScreeps.run("towerstocker", spawnRoom.numTowerStockers,spawnRoom.spawnName, energyAvailableInRoom);
+            buildScreeps.run("extensionstocker", spawnRoom.numTowerStockers,spawnRoom.spawnName, energyAvailableInRoom);
         });
     
         //check for dead creeps that still have something in memory
@@ -111,7 +121,7 @@ module.exports.loop = function () {
             if(creep.memory.role == 'builder') {
                 roleBuilder.run(creep);
             }
-            if(creep.memory.role == 'stocker') {
+            if(creep.memory.role == 'stocker' || creep.memory.role == 'extensionstocker' || creep.memory.role == 'towerstocker') {
                 roleStocker.run(creep);
             }
             if(creep.memory.role == 'maintainer'){

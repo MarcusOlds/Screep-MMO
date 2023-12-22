@@ -81,6 +81,8 @@ var buildScreeps = {
                     var bodyParts = [WORK,WORK,CARRY,CARRY,MOVE,MOVE];
                     break;
                 case 'stocker':
+                case 'towerstocker':
+                case 'extensionstocker':
                     var bodyParts = [];
                     var energyLeft = energyAvailableInRoom;
                     //dynamic Production of Stockers to ensure no break down of economy and colony fallout
@@ -168,46 +170,32 @@ var buildScreeps = {
                         memory['pickingup'] = false;
                         break;
                     case 'stocker':
-                        var memory = {role: "stocker"};
+                    case 'towerstocker':
+                    case 'extensionstocker':
+                        if(role == 'stocker'){
+                            var memory = {role: "stocker"};
+                        }
+                        if(role == 'towerstocker'){
+                            var memory = {role: 'towerstocker'}
+                        }
+                        if(role == 'extensionstocker'){
+                            var memory = {role: 'extensionstocker'}
+                        }
+                        
                         memory['delivering'] = false;
                         memory['pickingup'] = false;
                         //set subrole (deliver Focus)
-                        //get all maintainers
-                        
-                        var screepsInSubRoleExisiting = [];
-                        var towerFocused = 0;
-                        var storageFocused = 0;
-                        var extensionFocused = 0;
-                        //get number of screeps in each subrole
-                        screepsInRole.forEach(function (item, index){
-                            console.log(JSON.stringify(item.memory.subrole));
-                            screepsInSubRoleExisiting.push(item.memory.subrole);
-                        });
-                        //count the screeps in each subrole
-                        screepsInSubRoleExisiting.forEach(function (item, index){
-                            switch(item){
-                                case 'tower':
-                                    towerFocused++;
-                                    break;
-                                case 'storage':
-                                    storageFocused++;
-                                    break;
-                                case 'extension':
-                                    extensionFocused++;
-                                    break;
-                            }
-                        });
-                        if((towerFocused < storageFocused && towerFocused < extensionFocused) || towerFocused == 0){
-                            memory['subrole'] = "tower";
+                        if(role == 'stocker'){
+                            memory['subrole'] = "storage";
                             break;
-                        }else if((storageFocused < towerFocused && storageFocused < extensionFocused) || storageFocused == 0){
-                            memory['subrole'] = 'storage';
+                        }
+                        if(role == 'towerstocker'){
+                            memory['subrole'] = 'tower';
                             break;
-                        }else if((extensionFocused < towerFocused && extensionFocused < storageFocused) || extensionFocused == 0){
+                        }
+                        if(role == 'extensionstocker'){
                             memory['subrole'] = "extension";
                             break;
-                        }else {
-                            memory['subrole'] = 'extension';
                         }
                         break;
                     case 'upgrader':
