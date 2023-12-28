@@ -16,6 +16,7 @@ var roleMaintainer = require('role.maintainer');
 var roleClaimer = require('role.claimer');
 var roleDropHarvester = require('role.dropharvester');
 var roleAttacker = require('role.attacker');
+var roleMineralHarvester = require('role.mineralharvester')
 var buildScreeps = require('build.screeps');
 
 //initialize Desired Creep Numbers by Spawn Room saved to Game Memory
@@ -80,7 +81,7 @@ module.exports.loop = function () {
             buildScreeps.run('drop harvester', spawnRoom.numDropHarvesters,spawnRoom.spawnName, energyAvailableInRoom);
             buildScreeps.run("stocker", spawnRoom.numStockers,spawnRoom.spawnName, energyAvailableInRoom);
             buildScreeps.run("towerstocker", spawnRoom.numTowerStockers,spawnRoom.spawnName, energyAvailableInRoom);
-            buildScreeps.run("extensionstocker", spawnRoom.numTowerStockers,spawnRoom.spawnName, energyAvailableInRoom);
+            buildScreeps.run("extensionstocker", spawnRoom.numExtensionStockers,spawnRoom.spawnName, energyAvailableInRoom);
         });
     
         //check for dead creeps that still have something in memory
@@ -96,16 +97,20 @@ module.exports.loop = function () {
     //spawner check for creeps near by to renew them
     spawnRooms.forEach(function (spawnRoom, index){
         roleSpawner.CheckForRenew(spawnRoom.spawnName);
+        roleSpawner.CheckForMineral(spawnRoom.spawnName);
     });
     
 
     //tower logic 
     //needs a lot of work its still not dynamic at all
     var towers = Game.spawns['Spawn1'].room.find(FIND_MY_STRUCTURES,{filter:{ structureType: STRUCTURE_TOWER}})
-    roleTower.run(towers[0],wallStrengthGoal,rampartStenghtGoal);
-    roleTower.run(towers[1],wallStrengthGoal,rampartStenghtGoal);
+    towers.forEach(function (tower, index){
+        roleTower.run(tower,wallStrengthGoal,rampartStenghtGoal);
+    });
     towers = Game.spawns['Spawn2'].room.find(FIND_MY_STRUCTURES,{filter:{ structureType: STRUCTURE_TOWER}})
-    roleTower.run(towers[0],wallStrengthGoal,rampartStenghtGoal);
+    towers.forEach(function (tower, index){
+        roleTower.run(tower,wallStrengthGoal,rampartStenghtGoal);
+    });
 
     //if emergencyStop is true then no roles will be processed and all creeps will freeze
     if(!(emergencyStop)){
@@ -135,6 +140,9 @@ module.exports.loop = function () {
             }
             if(creep.memory.role == 'attacker'){
                 roleAttacker.run(creep);
+            }
+            if(creep.memory.role == 'mineral harvester'){
+                roleMineralHarvester.run(creep);
             }
         }
     }

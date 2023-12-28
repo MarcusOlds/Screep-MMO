@@ -45,6 +45,8 @@ var locations = {
                             break;
                     }
                     break;
+                case 'mineral harvester':
+                    break;
                 case 'maintainer':
                     break;
                 case 'stocker':

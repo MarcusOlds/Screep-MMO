@@ -9,7 +9,6 @@ var buildScreeps = {
         //get the number of screeps in role and room
         var screepsInRole = _.filter(Game.creeps, (creep) => creep.memory.role == role &&
         creep.memory.homeroom == Game.spawns[spawnName].pos.roomName);
-        
         //if creeps in role are not equal to the number desired then log to console
         if(screepsInRole.length != numRole){
             console.log(screepsInRole.length + '/' + numRole + ' ' + role);
@@ -63,6 +62,7 @@ var buildScreeps = {
                     var bodyParts = [WORK,WORK,WORK,CARRY,MOVE];
                     break;
                 case 'drop harvester':
+                case 'mineral harvester':
                     var bodyParts = [];
                     var energyLeft = energyAvailableInRoom;
                     //dynamic production of harvest to ensure no break down in harvesting and eventual colony fallout
@@ -162,7 +162,15 @@ var buildScreeps = {
                         var memory = {role:'harvester'};
                         break;
                     case 'drop harvester':
-                        var memory = {role: 'drop harvester'};
+                    case 'mineral harvester':
+                        if(role == 'drop harvester'){
+                            var memory = {role: 'drop harvester'};
+                            memory['subrole'] = "energy";
+                        }
+                        if(role == 'mineral harvester'){
+                            var memory = {role: 'mineral harvester'};
+                            memory['subrole'] = "mineral";
+                        }
                         break;
                     case 'maintainer':
                         var memory = {role: "maintainer"};
