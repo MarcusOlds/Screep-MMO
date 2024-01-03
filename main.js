@@ -67,6 +67,11 @@ module.exports.loop = function () {
     //log tick time
     var gameTime = Game.time
     console.log(Game.time)
+    //check cpu bucket and if its full create a pixel
+    bucketCPU = Game.cpu.bucket
+    if(bucketCPU == 10000){
+        Game.cpu.generatePixel()
+    }
     //create screeps as needed per room every 5 ticks
     if(gameTime % 5 == 0){
         spawnRooms.forEach(function (spawnRoom, index){
@@ -146,5 +151,4 @@ module.exports.loop = function () {
             }
         }
     }
-
 }

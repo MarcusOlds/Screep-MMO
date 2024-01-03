@@ -52,19 +52,19 @@ var harvestTarget = {
                 //count the harvesters assigned to each location
                 for (var name in Game.creeps){
                     var screep = Game.creeps[name];
-                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 1){
+                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 1 && screep.memory.subrole == "energy"){
                         numHarvestOne++
                     }
-                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 2){
+                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 2 && screep.memory.subrole == "energy"){
                         numHarvestTwo++
                     }
-                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 0){
+                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 0 && screep.memory.subrole == "energy"){
                         numHarvestThree++
                     }
-                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 3){
+                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 3 && screep.memory.subrole == "energy"){
                         numHarvestFour++
                     }
-                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 4){
+                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 4 && screep.memory.subrole == "energy"){
                         numHarvestFive++
                     }
                 }
@@ -106,8 +106,8 @@ var harvestTarget = {
                     creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(35,31,'W3S26');
                     creep.memory.harvestinfo.harvestsourceid = '5bbcacba9099fc012e63618d';
                 }else if(creep.memory.harvestinfo.harvestsource == 4){
-                    creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(43,32,'W2S26');
-                    creep.memory.harvestinfo.harvestsourceid = '5bbcacc89099fc012e636313';
+                    creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(43,32,'W2S27');
+                    creep.memory.harvestinfo.harvestsourceid = '5bbcacc89099fc012e636316';
                 }else if(creep.memory.harvestinfo.harvestsource == -1){
                     creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(25,25,'W3S27');
                     creep.memory.harvestinfo.harvestsourceid = null;

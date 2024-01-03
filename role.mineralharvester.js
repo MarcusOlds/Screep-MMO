@@ -23,9 +23,9 @@ var roleMineralHarvester = {
             var workparts = creep.getActiveBodyparts(WORK);
             creep.memory.harvestinfo.totalHarvested = (2 * workparts) + creep.memory.harvestinfo.totalHarvested
         }
-        //increase TTL if no harvesting can be done
-        if(Game.getObjectById(harvestSource).ticksToRegeneration > 50 && creep.ticksToLive <= 1300 && creep.harvest(Game.getObjectById(harvestSource)) == ERR_NOT_ENOUGH_RESOURCES){
-            creep.moveTo(creep.pos.findClosestByPath(FIND_MY_SPAWNS))
+        //kill creep if the mineral deposit is tapped out
+        if(Game.getObjectById(harvestSource).ticksToRegeneration > 50){
+            creep.suicide();
         //move to the harvest location otherwise
         }else if(creep.pos != harvestSourceLocation){
             creep.moveTo(harvestSourceLocation,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});

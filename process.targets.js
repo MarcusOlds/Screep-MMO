@@ -12,7 +12,7 @@ var getTarget = {
         var target = object.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_CONTAINER)  && 
-                        structure.store.getUsedCapacity(RESOURCE_ENERGY) > minAmount;
+                        structure.store.getUsedCapacity(_.findKey(structure.store)) > minAmount;
             }
         });
         return target;

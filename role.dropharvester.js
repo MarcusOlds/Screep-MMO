@@ -24,7 +24,13 @@ var roleDropHarvester = {
             creep.memory.harvestinfo.totalHarvested = (2 * workparts) + creep.memory.harvestinfo.totalHarvested
         }
         //increase TTL if no harvesting can be done
-        if(Game.getObjectById(harvestSource).ticksToRegeneration > 50 && creep.ticksToLive <= 1300 && creep.harvest(Game.getObjectById(harvestSource)) == ERR_NOT_ENOUGH_RESOURCES){
+        //if the ticksToRegeneration are null or the creep is spawning set variable to 0 to avoid errors
+        if(Game.getObjectById(harvestSource).ticksToRegeneration === null){
+            var ticksToRegeneration = 0;
+        }else{
+            var ticksToRegeneration = Game.getObjectById(harvestSource).ticksToRegeneration;
+        }
+        if(ticksToRegeneration > 50 && creep.ticksToLive <= 1300 && creep.harvest(Game.getObjectById(harvestSource)) == ERR_NOT_ENOUGH_RESOURCES){
             creep.moveTo(creep.pos.findClosestByPath(FIND_MY_SPAWNS))
         //move to the harvest location otherwise
         }else if(creep.pos != harvestSourceLocation){

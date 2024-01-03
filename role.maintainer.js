@@ -30,8 +30,6 @@ var roleMaintainer = {
                 if(creep.pos.roomName == 'W3S27'){
                     creep.moveTo(new RoomPosition(25,25,'W3S26'),{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}})
                 }else if(creep.pos.roomName == 'W3S26'){
-                    creep.moveTo(new RoomPosition(25,25,'W2S26'),{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}})
-                }else if(creep.pos.roomName == 'W2S26'){
                     creep.moveTo(new RoomPosition(25,25,'W2S27'),{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}})
                 }else if(creep.pos.roomName == 'W2S27'){
                     creep.moveTo(new RoomPosition(25,25,'W3S27'),{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}})
