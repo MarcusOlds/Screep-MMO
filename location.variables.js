@@ -16,75 +16,105 @@ workId = String Containing ObjectID
 idleLocation = RoomPosition
  */
 var locations = {
-    run: function(creep){
-        if(creep.memory.needsAssignment){
-            //for now only one homeroom
-            creep.memory.homeRoom = 'W2S27';
-            switch(creep.memory.role){
-                case 'builder':
-                    break; 
-                case 'claimer':
-                    break;
-                case 'harvester':
-                case 'drop harvester':
-                    switch(creep.memory.number){
-                        case 1:
-                            creep.memory.workLocation = new RoomPosition(14,35,'W3S27');
-                            creep.memory.workId = '5bbcacba9099fc012e636191';
-                            creep.memory.idleLocation = new RoomPosition(25,25, creep.memory.homeRoom);
-                            break;
-                        case 2:
-                            creep.memory.workLocation = new RoomPosition(8,39,'W3S27');
-                            creep.memory.workId = '5bbcacba9099fc012e636192';
-                            creep.memory.idleLocation = new RoomPosition(25,25,creep.memory.homeRoom);
-                            break;
-                        case 3:
-                            creep.memory.workLocation = new RoomPosition(7,39,'W3S27');
-                            creep.memory.workId = '5bbcacba9099fc012e636192';
-                            creep.memory.idleLocation = new RoomPosition(25,25,creep.memory.homeRoom);
-                            break;
-                    }
-                    break;
-                case 'mineral harvester':
-                    break;
-                case 'maintainer':
-                    break;
-                case 'stocker':
-                    break;
-                case 'upgrader':
-                    switch(creep.memory.number){
-                        case 1:
-                            creep.memory.workLocation = new RoomPosition(4,17,'W3S27');
-                            creep.memory.workId = '5bbcacba9099fc012e636190';
-                            creep.memory.idleLocation = new RoomPosition(25,25, creep.memory.homeRoom);
-                            break;
-                        case 2:
-                            creep.memory.workLocation = new RoomPosition(4,18,'W3S27');
-                            creep.memory.workId = '5bbcacba9099fc012e636190';
-                            creep.memory.idleLocation = new RoomPosition(25,25,creep.memory.homeRoom);
-                            break;
-                        case 3:
-                            creep.memory.workLocation = new RoomPosition(4,19,'W3S27');
-                            creep.memory.workId = '5bbcacba9099fc012e636190';
-                            creep.memory.idleLocation = new RoomPosition(25,25,creep.memory.homeRoom);
-                            break;
-                        case 4:
-                            creep.memory.workLocation = new RoomPosition(4,20,'W3S27');
-                            creep.memory.workId = '5bbcacba9099fc012e636190';
-                            creep.memory.idleLocation = new RoomPosition(25,25,creep.memory.homeRoom);
-                            break;
-                        case 5:
-                            creep.memory.workLocation = new RoomPosition(4,21,'W3S27');
-                            creep.memory.workId = '5bbcacba9099fc012e636190';
-                            creep.memory.idleLocation = new RoomPosition(25,25,creep.memory.homeRoom);
-                            break;
-                        case 6:
-                            creep.memory.workLocation = new RoomPosition(4,22,'W3S27');
-                            creep.memory.workId = '5bbcacba9099fc012e636190';
-                            creep.memory.idleLocation = new RoomPosition(25,25,creep.memory.homeRoom);
-                            break;
-                    }
-            }
+    assignHomeRoom: function(creep){
+        creep.memory.homeRoom = creep.pos.roomName
+    },
+    assignRoomNumber: function(creep){
+        switch(creep.memory.homeRoom){
+            case 'W3S27':
+                var roomNumber = 0;
+                break;
+            case 'W3S26':
+                var roomNumber = 1;
+                break;
+        }
+        creep.memory.homeRoomNumber = roomNumber
+    },
+    assignLocations: function(creep){
+        homeRoom = creep.memory.homeRoom;
+        roomNumber = creep.memory.homeRoomNumber;
+        roleNumber = creep.memory.number;
+        role = creep.memory.role;
+        switch(role){
+            case 'builder':
+                break; 
+            case 'claimer':
+                break;
+            case 'harvester':
+            case 'drop harvester':
+                switch(roomNumber){
+                    case 0:
+                        switch(roleNumber){
+                            case 0:
+                                creep.memory.workLocation = new RoomPosition(14,35,homeRoom);
+                                creep.memory.workId = '5bbcacba9099fc012e636191';
+                                creep.memory.idleLocation = new RoomPosition(25,25, homeRoom);
+                                break;
+                            case 1:
+                                creep.memory.workLocation = new RoomPosition(8,39,homeRoom);
+                                creep.memory.workId = '5bbcacba9099fc012e636192';
+                                creep.memory.idleLocation = new RoomPosition(25,25,homeRoom);
+                                break;
+                        }
+                        break;
+                    case 1:
+                        switch(roleNumber){
+                            case 0:
+                                creep.memory.workLocation = new RoomPosition(35,31,homeRoom);
+                                creep.memory.workId = '5bbcacba9099fc012e63618d';
+                                creep.memory.idleLocation = new RoomPosition(25,25, homeRoom);
+                                break;
+                        }
+                }
+                break;
+            case 'mineral harvester':
+                switch(roomNumber){
+                    case 0:
+                        switch(roleNumber){
+                            case 0:
+                                creep.memory.workLocation = new RoomPosition(37,36,homeRoom);
+                                creep.memory.workId = '5bbcb2b940062e4259e93ced';
+                                creep.memory.idleLocation = new RoomPosition(25,25, homeRoom);
+                                break;
+                        }
+                        break;
+                    case 1:
+                        switch(roleNumber){
+                            case 0:
+                                creep.memory.workLocation = new RoomPosition(44,12,homeRoom);
+                                creep.memory.workId = '5bbcb2b940062e4259e93cec';
+                                creep.memory.idleLocation = new RoomPosition(25,25, homeRoom);
+                                break;
+                            case 1:
+                                creep.memory.workLocation = new RoomPosition(43,12,homeRoom);
+                                creep.memory.workId = '5bbcb2b940062e4259e93cec';
+                                creep.memory.idleLocation = new RoomPosition(25,25, homeRoom);
+                                break;
+                            case 2:
+                                creep.memory.workLocation = new RoomPosition(43,11,homeRoom);
+                                creep.memory.workId = '5bbcb2b940062e4259e93cec';
+                                creep.memory.idleLocation = new RoomPosition(25,25, homeRoom);
+                                break;
+                        }
+                }
+                break;
+            case 'maintainer':
+                break;
+            case 'stocker':
+                break;
+            case 'upgrader':
+                switch(roomNumber){
+                    case 0:
+                        creep.memory.workLocation = new RoomPosition(5,22,homeRoom);
+                        creep.memory.workId = '5bbcacba9099fc012e636190';
+                        creep.memory.idleLocation = new RoomPosition(25,25, homeRoom);
+                        break;
+                    case 1:
+                        creep.memory.workLocation = new RoomPosition(35,31,homeRoom);
+                        creep.memory.workId = '5bbcacba9099fc012e63618e';
+                        creep.memory.idleLocation = new RoomPosition(25,25, homeRoom);
+                        break;
+                }
         }
     }
 }
