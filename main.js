@@ -122,32 +122,50 @@ module.exports.loop = function () {
         //execute logic on creeps based on their roles
         for(var name in Game.creeps) {
             var creep = Game.creeps[name];
-            if(creep.memory.role == 'harvester') {
-                roleHarvester.run(creep);
+            //check if low time to live
+            if(creep.ticksToLive <= 200 && creep.room.energyAvailable >= 500){
+                //start reuping
+                creep.memory.reup = true;
             }
-            if(creep.memory.role == 'upgrader') {
-                roleUpgrader.run(creep);
+            //if needing reup
+            if(creep.memory.reup == true){
+                //move to the spawn
+                creep.moveTo(creep.pos.findClosestByPath(FIND_MY_SPAWNS))
+                //check if done
+                if(creep.ticksToLive >= 1300 || creep.room.energyAvailable < 350){
+                    //stop reup and start working
+                    creep.memory.reup = false;
+                }
             }
-            if(creep.memory.role == 'builder') {
-                roleBuilder.run(creep);
-            }
-            if(creep.memory.role == 'stocker' || creep.memory.role == 'extensionstocker' || creep.memory.role == 'towerstocker') {
-                roleStocker.run(creep);
-            }
-            if(creep.memory.role == 'maintainer'){
-                roleMaintainer.run(creep, wallStrengthGoal, rampartStenghtGoal);
-            }
-            if(creep.memory.role == 'claimer'){
-                roleClaimer.run(creep);
-            }
-            if(creep.memory.role == 'drop harvester'){
-                roleDropHarvester.run(creep);
-            }
-            if(creep.memory.role == 'attacker'){
-                roleAttacker.run(creep);
-            }
-            if(creep.memory.role == 'mineral harvester'){
-                roleMineralHarvester.run(creep);
+            if(creep.memory.reup != true){
+                
+                if(creep.memory.role == 'harvester') {
+                    roleHarvester.run(creep);
+                }
+                if(creep.memory.role == 'upgrader') {
+                    roleUpgrader.run(creep);
+                }
+                if(creep.memory.role == 'builder') {
+                    roleBuilder.run(creep);
+                }
+                if(creep.memory.role == 'stocker' || creep.memory.role == 'extensionstocker' || creep.memory.role == 'towerstocker') {
+                    roleStocker.run(creep);
+                }
+                if(creep.memory.role == 'maintainer'){
+                    roleMaintainer.run(creep, wallStrengthGoal, rampartStenghtGoal);
+                }
+                if(creep.memory.role == 'claimer'){
+                    roleClaimer.run(creep);
+                }
+                if(creep.memory.role == 'drop harvester'){
+                    roleDropHarvester.run(creep);
+                }
+                if(creep.memory.role == 'attacker'){
+                    roleAttacker.run(creep);
+                }
+                if(creep.memory.role == 'mineral harvester'){
+                    roleMineralHarvester.run(creep);
+                }
             }
         }
     }

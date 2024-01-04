@@ -39,7 +39,16 @@ var getTarget = {
         });
         return target;
     },
-
+    //find closest storage with energy in it
+    findClosestStorageWithAResource: function(object, minAmount, resource){
+        var target = object.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_STORAGE) && 
+                        structure.store.getUsedCapacity(resource) > minAmount;
+            }
+        });
+        return target;
+    },
     //find tombstone with resources in them
     findClosestTombstoneWithResources: function(object){
         target = object.pos.findClosestByPath(FIND_TOMBSTONES, {filter: (tombstones) => {
@@ -78,7 +87,24 @@ var getTarget = {
         }); 
         return target;
     },
-
+    findTerminal: function(object){
+        var target = object.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_TERMINAL) &&
+                        structure.store.getFreeCapacity() > object.store.getUsedCapacity();
+            }
+        });
+        return target;
+    },
+    findLab: function(object){
+        var target = object.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_LAB) &&
+                        structure,store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+            }
+        });
+        return target;
+    },
     //send creep to pickup from a target
     pickupResource: function(creep, target){
         if (creep.pickup(target) == ERR_NOT_IN_RANGE){
@@ -92,6 +118,11 @@ var getTarget = {
             creep.moveTo(target,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});
         };
     },
+    withdrawAResource: function(creep,target,resource){
+        if (creep.withdraw(target,resource) == ERR_NOT_IN_RANGE){
+            creep.moveTo(target,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});
+        };
+    },
 
     //send creep to withdraw energy from a target
     withdrawEnergy: function(creep,target){
@@ -99,7 +130,12 @@ var getTarget = {
             creep.moveTo(target,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});
         }
     },
-
+    //send creep to transfer all resources to a target
+    TransferAResource: function(creep,target,resource){
+        if(creep.transfer(target, resource) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(target,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});
+        }
+    },
     //send creep to transfer all resources to a target
     TransferResource: function(creep,target){
         if(creep.transfer(target, _.findKey(creep.store)) == ERR_NOT_IN_RANGE) {

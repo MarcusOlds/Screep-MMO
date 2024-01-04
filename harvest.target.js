@@ -84,9 +84,6 @@ var harvestTarget = {
                 }else if(numHarvestFour < 1){
                     creep.memory.harvestinfo.harvesting = true;
                     creep.memory.harvestinfo.harvestsource = 3;          
-                }else if(numHarvestFive < 1){
-                    creep.memory.harvestinfo.harvesting = true;
-                    creep.memory.harvestinfo.harvestsource = 4;          
                 }else{
                     creep.memory.harvestinfo.harvesting = false;
                     creep.memory.harvestinfo.harvestsource = -1;
@@ -100,12 +97,9 @@ var harvestTarget = {
                     creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(8,39,'W3S27');
                     creep.memory.harvestinfo.harvestsourceid = '5bbcacba9099fc012e636192';
                 }else if(creep.memory.harvestinfo.harvestsource == 2){
-                    creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(7,39,'W3S27');
-                    creep.memory.harvestinfo.harvestsourceid = '5bbcacba9099fc012e636192';
-                }else if(creep.memory.harvestinfo.harvestsource == 3){
                     creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(35,31,'W3S26');
                     creep.memory.harvestinfo.harvestsourceid = '5bbcacba9099fc012e63618d';
-                }else if(creep.memory.harvestinfo.harvestsource == 4){
+                }else if(creep.memory.harvestinfo.harvestsource == 3){
                     creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(43,32,'W2S27');
                     creep.memory.harvestinfo.harvestsourceid = '5bbcacc89099fc012e636316';
                 }else if(creep.memory.harvestinfo.harvestsource == -1){

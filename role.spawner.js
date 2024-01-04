@@ -5,7 +5,7 @@ var roleSpawner = {
         if(!(Game.spawns[spawnName].spawning) && Game.spawns[spawnName].room.energyAvailable >= 300){
             for(var name in Game.creeps) {
                 var creep = Game.creeps[name];
-                if(Game.spawns[spawnName].pos.inRangeTo(creep,1) && creep.ticksToLive <= 1300){
+                if(Game.spawns[spawnName].pos.inRangeTo(creep,1) && creep.ticksToLive <= 1450){
                     Game.spawns[spawnName].renewCreep(creep);
                     console.log(creep.name + " is being renewed");
                 }

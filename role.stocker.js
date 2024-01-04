@@ -12,6 +12,7 @@ var roleStocker = {
 	    if(creep.store.getFreeCapacity() == creep.store.getCapacity() || creep.memory.pickingup) {
             //stop working
 	        creep.memory.delivering = false;
+            creep.memory.stockingterminal = false;
             //start pickup
 	        if(!(creep.memory.pickingup)){
 	            creep.memory.pickingup = true;
@@ -45,6 +46,14 @@ var roleStocker = {
                             processTargets.withdrawResources(creep,target);
                         }
                     }
+                    //if nothing else to move, stock the terminal with goods
+                    if(!(target)){
+                        var target = processTargets.findClosestStorageWithAResource(creep,1000,RESOURCE_HYDROGEN)
+                        if(target){
+                            processTargets.withdrawAResource(creep,target,RESOURCE_HYDROGEN);
+                            creep.memory.stockingterminal = true;
+                        }                       
+                    }
                     break;
                 case 'tower':
                 case 'extension':
@@ -60,6 +69,18 @@ var roleStocker = {
                 creep.memory.pickingup = false;
             }
         //if creep is not empty and not set to picking up
+        }else if(creep.memory.stockingterminal == true){
+            creep.memory.harvestinfo.pickingup = false;
+            creep.memory.delivering = true;
+
+            var target = processTargets.findTerminal(creep)
+            if(target){
+                processTargets.TransferAResource(creep,target,RESOURCE_HYDROGEN);
+                console.log(JSON.stringify(creep.store.getUsedCapacity(RESOURCE_HYDROGEN)))
+            }
+            if(creep.store.getUsedCapacity(RESOURCE_HYDROGEN) == 0){
+                creep.memory.stockingterminal = false;
+            }
         }else{
             //set creep to delivering
             creep.memory.harvestinfo.pickingup = false;
