@@ -1,22 +1,46 @@
 var harvestTarget = require('harvest.target');
 var processTargets = require('process.targets');
 var roleStocker = {
-    test: function(){
-        console.log('test');
+    setToDelivering: function(creep){
+        creep.memory.delivering = true;
+        creep.memory.pickingup = false;
+        creep.memory.stockingterminal = false;
     },
+    setToPickingUp: function(creep){
+        creep.memory.delivering = false;
+        creep.memory.pickingup = true;
+        creep.memory.stockingterminal = false;
+    },
+    setToStockingTerminal: function(creep){
+        creep.memory.delivering = false;
+        creep.memory.pickingup = false;
+        creep.memory.stockingterminal = true;       
+    },
+    setTask: function(creep){
+        //delivering
+        if(creep.store.getFreeCapacity() == 0){
+            this.setToDelivering(creep);
+        }
+        //pickup
+        if(creep.store.getUsedCapacity() == 0){
+            this.setToPickingUp(creep);
+        }
+        if(!(creep.memory.delivering) && !(creep.memory.pickingup)){
+            this.setToPickingUp(creep);
+        }
+    },
+
 
     /** @param {Creep} creep **/
     run: function(creep) {
+        //set the task
+        if(!(creep.memory.stockingterminal)){
+            this.setTask(creep);
+        }
 
-        //if creep is empty capacity  
-	    if(creep.store.getFreeCapacity() == creep.store.getCapacity() || creep.memory.pickingup) {
-            //stop working
-	        creep.memory.delivering = false;
-            creep.memory.stockingterminal = false;
-            //start pickup
-	        if(!(creep.memory.pickingup)){
-	            creep.memory.pickingup = true;
-	        }
+
+        //pickingup
+	    if(creep.memory.pickingup) {
             switch(creep.memory.subrole){
                 case 'storage':
                     //find closest dropped resource as priority because they decay
@@ -41,18 +65,19 @@ var roleStocker = {
                     //find the closest container with resources in it
                     if(!(target)){
                         //if there is no dropped resources find a container with some energy in it
-                        var target = processTargets.findClosestContainerWithEnergy(creep,100);
+                        var target = processTargets.findClosestContainerWithEnergy(creep,1);
                         if(target){
                             processTargets.withdrawResources(creep,target);
                         }
                     }
-                    //if nothing else to move, stock the terminal with goods
                     if(!(target)){
-                        var target = processTargets.findClosestStorageWithAResource(creep,1000,RESOURCE_HYDROGEN)
-                        if(target){
-                            processTargets.withdrawAResource(creep,target,RESOURCE_HYDROGEN);
-                            creep.memory.stockingterminal = true;
-                        }                       
+                        //stockingTerminal
+                        roomResource = processTargets.getRoomResource(creep);
+                        terminal = processTargets.findTerminal(creep);
+                        storage = processTargets.findClosestStorageWithAResource(creep,100,roomResource);
+                        if(storage){
+                            this.setToStockingTerminal(creep);
+                        }
                     }
                     break;
                 case 'tower':
@@ -62,30 +87,28 @@ var roleStocker = {
                         processTargets.withdrawResources(creep,target);
                     }
             }
-
-            //if creep is full turn off pickingup
-            if(creep.store.getFreeCapacity() == 0){
-                creep.memory.delivering = true;
-                creep.memory.pickingup = false;
-            }
         //if creep is not empty and not set to picking up
-        }else if(creep.memory.stockingterminal == true){
-            creep.memory.harvestinfo.pickingup = false;
-            creep.memory.delivering = true;
-
-            var target = processTargets.findTerminal(creep)
-            if(target){
-                processTargets.TransferAResource(creep,target,RESOURCE_HYDROGEN);
-                console.log(JSON.stringify(creep.store.getUsedCapacity(RESOURCE_HYDROGEN)))
+        }
+        if(creep.memory.stockingterminal){
+            //get the mats
+            resource = processTargets.getRoomResource(creep);
+            if(creep.store.getUsedCapacity(resource) == 0){
+                var target = processTargets.findClosestStorageWithAResource(creep,1000,resource)
+                if(target){
+                    processTargets.withdrawAResource(creep,target,resource);
+                }
+            }else{
+                var target = processTargets.findTerminal(creep)
+                if(target){
+                    processTargets.TransferAResource(creep,target,resource);
+                }
             }
-            if(creep.store.getUsedCapacity(RESOURCE_HYDROGEN) == 0){
+            var target = processTargets.findClosestStorageWithAResource(creep,1000,resource)
+            if(!(target)){
                 creep.memory.stockingterminal = false;
             }
-        }else{
-            //set creep to delivering
-            creep.memory.harvestinfo.pickingup = false;
-            creep.memory.delivering = true;
-
+        }
+        if(creep.memory.delivering){
             //check if creep has minerals to deposit
             if(creep.store.getUsedCapacity(_.findKey(creep.store)) && creep.store.getUsedCapacity(RESOURCE_ENERGY) == 0){
                 //find closest storage
@@ -96,7 +119,7 @@ var roleStocker = {
             if(target) {
                 processTargets.TransferResource(creep,target);
             }
-            //roll switch
+            //role switch
             if(!(target)){
                 switch(creep.memory.subrole){
                     case 'tower':

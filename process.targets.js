@@ -1,4 +1,11 @@
 var getTarget = {
+    //find the rooms resource
+    getRoomResource: function(creep){
+        var target = creep.pos.findClosestByRange(FIND_MINERALS);
+        resource = target.mineralType
+        return resource;
+    },
+
     //Find dropped resources and return the closest
     findClosestDroppedResource: function(object, minAmount){
         var target = object.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {filter: (resource) => {

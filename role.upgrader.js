@@ -25,21 +25,13 @@ var roleUpgrader = {
             }
             //}
         } else {
-            //check for dropped resources
-            var target = getTarget.findClosestDroppedResource(creep,100);
-            if(target){
-                getTarget.pickupResource(creep,target);
-            };
-	        //if creep is not upgrading check for full containers
-            if(!(target)){
-                var targetContainer = getTarget.findClosestStorageWithEnergy(creep,50);
-                if(targetContainer){
-                    getTarget.withdrawEnergy(creep,targetContainer);
-                }
-                //switch away from picking up if full
-                if(creep.store.getFreeCapacity == 0){
-                    creep.memory.pickingup = false;
-                }
+            var targetContainer = getTarget.findClosestStorageWithEnergy(creep,50);
+            if(targetContainer){
+                getTarget.withdrawEnergy(creep,targetContainer);
+            }
+            //switch away from picking up if full
+            if(creep.store.getFreeCapacity == 0){
+                creep.memory.pickingup = false;
             }
         }
 	}
