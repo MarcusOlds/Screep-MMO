@@ -2,16 +2,16 @@ var harvestTarget = require('harvest.target');
 var roleTower = {
     /** @param {Creep} creep **/
     run: function(tower,wallStrengthGoal,rampartStengthGoal) {
-        var closestHealer = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {filter: (creep) => creep.getActiveBodyparts(HEAL) > 0});
-        if(closestHealer) {
-            tower.attack(closestHealer);
+        var target = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {filter: (creep) => creep.getActiveBodyparts(HEAL) > 0});
+        if(target) {
+            tower.attack(target);
         };
-        if(!(closestHealer)){
-            var closestHostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-            if(closestHostile) {
-                tower.attack(closestHostile);
+        if(!(target)){
+            var target = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+            if(target) {
+                tower.attack(target);
             }else{
-                var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                var target = tower.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: (structure) => (((structure.structureType != STRUCTURE_WALL && 
                                             structure.structureType != STRUCTURE_RAMPART) && 
                                             structure.hits < structure.hitsMax) || 
@@ -20,12 +20,25 @@ var roleTower = {
                                             (structure.structureType == STRUCTURE_RAMPART &&
                                             structure.hits < rampartStengthGoal)))
                 });
-                if(closestDamagedStructure) {
-                    tower.repair(closestDamagedStructure);
+                if(target) {
+                    tower.repair(target);
                 }
             }
         }
+        if(target){
+            Memory.minMaxes.working = true;
+        }
+	},
 
-	}
+    increaseMinMaxes: function(){
+        if(Memory.minMaxes.wallStrengthGoal <= 300000000){
+            Memory.minMaxes.wallStrengthGoal = Memory.minMaxes.wallStrengthGoal + 200;
+            console.log('minMaxes increased for walls');
+        };
+        if(Memory.minMaxes.rampartStengthGoal <= 300000000){
+            Memory.minMaxes.rampartStengthGoal = Memory.minMaxes.rampartStengthGoal + 100;
+            console.log('minMaxes increased for Ramparts');
+        }
+    }
 };
 module.exports = roleTower;

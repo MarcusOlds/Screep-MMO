@@ -5,10 +5,10 @@
  * memory.needsAssignment = bool (This will start as true and switch once assignment below is made)
  */
 var buildScreeps = {
-    run: function(role, numRole,spawnName,energyAvailableInRoom) {
+    run: function(role, numRole,spawnName,energyAvailableInRoom,homeRoom,expansionScreep) {
         //get the number of screeps in role and room
         var screepsInRole = _.filter(Game.creeps, (creep) => creep.memory.role == role &&
-        creep.memory.homeroom == Game.spawns[spawnName].pos.roomName);
+        creep.memory.homeroom == homeRoom);
         //if creeps in role are not equal to the number desired then log to console
         if(screepsInRole.length != numRole){
             console.log(screepsInRole.length + '/' + numRole + ' ' + role);
@@ -18,13 +18,23 @@ var buildScreeps = {
             switch(role){
                 case 'attacker':
                     var bodyParts = [];
-                    if(energyAvailableInRoom >= 1300){
+                    if(energyAvailableInRoom >= 1800){
                         var workParts = 0;
                         energyLeft = energyAvailableInRoom;
                         while (energyLeft >= 140 && workParts <= 50){
                             bodyParts.push(TOUGH,ATTACK,MOVE);
                             energyLeft = energyLeft - 140;
                             workParts = workParts + 3
+                        }
+                    }
+                    break;
+                case 'healer':
+                    var bodyParts = [];
+                    var energyLeft = energyAvailableInRoom;
+                    if(energyAvailableInRoom > 1800){
+                        while (energyLeft >= 550 && bodyParts.length <= 50){
+                            bodyParts.push(HEAL,HEAL,MOVE);
+                            energyLeft = energyLeft - 550;
                         }
                     }
                     break;
@@ -150,6 +160,9 @@ var buildScreeps = {
                     case 'attacker':
                         var memory = {role: 'attacker'};
                         break;
+                    case 'healer':
+                        var memory = {role: 'healer'};
+                        break;
                     case 'builder':
                         var memory = {role: 'builder'};
                         memory['building'] = false;
@@ -240,13 +253,11 @@ var buildScreeps = {
                 //generic all creeps memory
                 memory['needsAssignment'] = true;
                 memory["harvestinfo"] = {harvesting: false, harvestsource: 0};
-                switch(spawnName){
-                    case 'Spawn1':
-                        memory['homeroom'] = 'W3S27'
-                        break;
-                    case 'Spawn2':
-                        memory['homeroom'] = 'W3S26'
-                        break;
+                memory['homeroom'] = homeRoom;
+                if(expansionScreep){
+                    memory['expansioncreep']  = true;
+                }else{
+                    memory['expansioncreep'] = false;
                 }
                 //final creation of memory 
                 var memoryFinal = {memory};
@@ -257,7 +268,22 @@ var buildScreeps = {
                 }
             }
         }
-	}
+	},
+    buildExpansionCreep: function(room){
+        expansionRoom = Memory.ExpansionCreeps;
+        var energyAvailableInRoom = Game.spawns[expansionRoom.spawnName].room.energyAvailable;
+        this.run('harvester', expansionRoom.numHarvesters,expansionRoom.spawnName, energyAvailableInRoom,room,true);
+        this.run('builder', expansionRoom.numBuilders,expansionRoom.spawnName, energyAvailableInRoom,room,true);
+        this.run("upgrader",expansionRoom.numUpgraders,expansionRoom.spawnName, energyAvailableInRoom,room,true);
+        this.run("maintainer", expansionRoom.numMaintainers, expansionRoom.spawnName,energyAvailableInRoom,room,true);
+        this.run('claimer', expansionRoom.numClaimers,expansionRoom.spawnName, energyAvailableInRoom,room,true);
+        this.run("attacker", expansionRoom.numAttackers, expansionRoom.spawnName,energyAvailableInRoom,room,true);
+        this.run('drop harvester', expansionRoom.numDropHarvesters,expansionRoom.spawnName, energyAvailableInRoom,room,true);
+        this.run("stocker", expansionRoom.numStockers,expansionRoom.spawnName, energyAvailableInRoom,room,true);
+        this.run("towerstocker", expansionRoom.numTowerStockers,expansionRoom.spawnName, energyAvailableInRoom,room,true);
+        this.run("extensionstocker", expansionRoom.numExtensionStockers,expansionRoom.spawnName, energyAvailableInRoom,room,true);
+        this.run("healer", expansionRoom.numHealers,expansionRoom.spawnName, energyAvailableInRoom,room,true);
+    }
 };
 
 module.exports = buildScreeps;

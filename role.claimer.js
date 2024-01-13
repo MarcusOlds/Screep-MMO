@@ -4,8 +4,8 @@ var roleClaimer = {
     /** @param {Creep} creep **/
     run: function(creep) {
         if (creep.memory.number == 0){
-            if(creep.reserveController(Game.getObjectById('5bbcacc89099fc012e636317')) == ERR_NOT_IN_RANGE || creep.reserveController(Game.getObjectById('5bbcaf6a9099fc012e63a935')) == ERR_INVALID_TARGET){
-                var claimLocation = new RoomPosition(7,10,'W2S27');
+            if(creep.reserveController(Game.getObjectById('5bbcacbb9099fc012e636195')) == ERR_NOT_IN_RANGE || creep.reserveController(Game.getObjectById('5bbcacbb9099fc012e636195')) == ERR_INVALID_TARGET){
+                var claimLocation = new RoomPosition(25,19,'W3S28');
             }
         }
         if (creep.memory.number == 1){

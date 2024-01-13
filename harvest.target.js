@@ -52,13 +52,13 @@ var harvestTarget = {
                 //count the harvesters assigned to each location
                 for (var name in Game.creeps){
                     var screep = Game.creeps[name];
-                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 1 && screep.memory.subrole == "energy"){
+                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 0 && screep.memory.subrole == "energy"){
                         numHarvestOne++
                     }
-                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 2 && screep.memory.subrole == "energy"){
+                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 1 && screep.memory.subrole == "energy"){
                         numHarvestTwo++
                     }
-                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 0 && screep.memory.subrole == "energy"){
+                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 2 && screep.memory.subrole == "energy"){
                         numHarvestThree++
                     }
                     if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 3 && screep.memory.subrole == "energy"){
@@ -74,16 +74,19 @@ var harvestTarget = {
                 //I have designed this currently for a single creep assigned to each site with a specific location a drop harvester will park, but with minor tweeking of this section and the section below this can be utilized for any harvester style
                 if(numHarvestOne < 1){
                     creep.memory.harvestinfo.harvesting = true;
-                    creep.memory.harvestinfo.harvestsource = 1;
-                }else if(numHarvestThree < 1){
-                    creep.memory.harvestinfo.harvesting = true;
                     creep.memory.harvestinfo.harvestsource = 0;
                 }else if(numHarvestTwo < 1){
+                    creep.memory.harvestinfo.harvesting = true;
+                    creep.memory.harvestinfo.harvestsource = 1;
+                }else if(numHarvestThree < 1){
                     creep.memory.harvestinfo.harvesting = true;
                     creep.memory.harvestinfo.harvestsource = 2;          
                 }else if(numHarvestFour < 1){
                     creep.memory.harvestinfo.harvesting = true;
                     creep.memory.harvestinfo.harvestsource = 3;          
+                }else if(numHarvestFive < 1){
+                    creep.memory.harvestinfo.harvesting = true;
+                    creep.memory.harvestinfo.harvestsource = 4;          
                 }else{
                     creep.memory.harvestinfo.harvesting = false;
                     creep.memory.harvestinfo.harvestsource = -1;
@@ -100,8 +103,8 @@ var harvestTarget = {
                     creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(35,31,'W3S26');
                     creep.memory.harvestinfo.harvestsourceid = '5bbcacba9099fc012e63618d';
                 }else if(creep.memory.harvestinfo.harvestsource == 3){
-                    creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(43,32,'W2S27');
-                    creep.memory.harvestinfo.harvestsourceid = '5bbcacc89099fc012e636316';
+                    creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(17,19,'W3S28');
+                    creep.memory.harvestinfo.harvestsourceid = '5bbcacbb9099fc012e636194';
                 }else if(creep.memory.harvestinfo.harvestsource == -1){
                     creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(25,25,'W3S27');
                     creep.memory.harvestinfo.harvestsourceid = null;

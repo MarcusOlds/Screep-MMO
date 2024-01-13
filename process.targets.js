@@ -14,6 +14,21 @@ var getTarget = {
         return target;
     },
 
+    //find closest link
+    findClosestLink: function(object){
+        var target = object.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
+            return(structure.structureType == STRUCTURE_LINK);
+        }});
+        return target;
+    },
+
+    findClosestLinkWithEnergy: function(object, minAmount){
+        var target = object.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
+            return(structure.structureType == STRUCTURE_LINK && structure.store.getUsedCapacity(RESOURCE_ENERGY) > minAmount);
+        }});
+        return target;
+    },
+
     //find container with energy in it
     findClosestContainerWithEnergy: function(object, minAmount){
         var target = object.pos.findClosestByPath(FIND_STRUCTURES, {
