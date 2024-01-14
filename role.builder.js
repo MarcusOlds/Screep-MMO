@@ -24,15 +24,19 @@ var roleBuilder = {
             //terrible terrible logic, needs to be fixed but have higher priorities
             if(!(target)){
                 if(!(creep.memory.targetRoom)){
-                    if(creep.pos.roomName == 'W3S27'){
-                        var targetRoom = new RoomPosition (35, 34, 'W3S26');
+                    if(creep.pos.roomName == 'W3S26'){
+                        var targetRoom = new RoomPosition (35, 34, 'W3S27');
                         creep.memory.targetRoom = targetRoom
-                    }else if(creep.pos.roomName == 'W3S26'){
+                    }else if(creep.pos.roomName == 'W3S27'){
                         var targetRoom = new RoomPosition (30, 31, 'W3S28');
                         creep.memory.targetRoom = targetRoom;
                         //creep.moveTo(new RoomPosition(25,25,'W2S26'),{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}})
                     }else if(creep.pos.roomName == 'W3S28'){
-                        var targetRoom = new RoomPosition (28, 25, 'W3S27');
+                        var targetRoom = new RoomPosition (28, 25, 'W3S29');
+                        creep.memory.targetRoom = targetRoom
+                        //creep.moveTo(new RoomPosition(25,25,'W3S27'),{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}})
+                    }else if(creep.pos.roomName == 'W3S29'){
+                        var targetRoom = new RoomPosition (28, 25, 'W3S26');
                         creep.memory.targetRoom = targetRoom
                         //creep.moveTo(new RoomPosition(25,25,'W3S27'),{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}})
                     }

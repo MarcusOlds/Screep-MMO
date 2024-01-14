@@ -39,11 +39,11 @@ var initializeVariables = {
         Memory.minMaxes = {wallStrengthGoal: 110000, rampartStengthGoal: 3000000, working: false, upgradeWalls: false};
 
         //set array variable for room reservations
-        Memory.ExpansionRooms = ["W3S28"];
+        Memory.ExpansionRooms = ['W3S28'];
         //set Expansion Room Screeps
         var ExpansionCreeps={
-            spawnName: "Spawn1",
-            numHarvesters: 1,
+            spawnName: "Spawn2",
+            numHarvesters: 3,
             numUpgraders: 0,
             numBuilders: 1,
             numStockers: 0,
@@ -56,7 +56,7 @@ var initializeVariables = {
             numHealers: 0       
         }
         Memory.ExpansionCreeps = ExpansionCreeps;
-        Memory.ExpansionActive = false;
+        Memory.ExpansionActive = true;
         Memory.initialize = false;
     }
 }

@@ -8,7 +8,6 @@ var roleLink = {
 	},
     findTargetDestinationLink: function(linkID){
         room = Game.getObjectById(linkID).pos.roomName
-        console.log(room);
         switch (room){
             case 'W3S27':
                 return Game.getObjectById('65a1b036274b8e9d56d7ac20');

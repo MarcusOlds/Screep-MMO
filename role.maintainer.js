@@ -61,6 +61,9 @@ var roleMaintainer = {
                                     structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0;
                         }
                 });
+                if(!targetContainer){
+                    var targetContainer = processTarget.findClosestContainerWithEnergy(creep,5);
+                }
                 if(targetContainer){
                     creep.memory.harvestinfo.targetContainer = targetContainer.id;
                     creep.memory.pickingup = true;

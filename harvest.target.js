@@ -81,10 +81,10 @@ var harvestTarget = {
                 }else if(numHarvestThree < 1){
                     creep.memory.harvestinfo.harvesting = true;
                     creep.memory.harvestinfo.harvestsource = 2;          
-                }else if(numHarvestFour < 1){
+                }else if(numHarvestFour < 3){
                     creep.memory.harvestinfo.harvesting = true;
                     creep.memory.harvestinfo.harvestsource = 3;          
-                }else if(numHarvestFive < 1){
+                }else if(numHarvestFive < 3){
                     creep.memory.harvestinfo.harvesting = true;
                     creep.memory.harvestinfo.harvestsource = 4;          
                 }else{
@@ -94,17 +94,25 @@ var harvestTarget = {
 
                 //set the creeps harvest location and source ID to memory
                 if(creep.memory.harvestinfo.harvestsource == 0){
+                    creep.memory.homeroom = 'W3S27';
                     creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(14,35,'W3S27');
                     creep.memory.harvestinfo.harvestsourceid = '5bbcacba9099fc012e636191';
                 }else if(creep.memory.harvestinfo.harvestsource == 1){
+                    creep.memory.homeroom = 'W3S27';
                     creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(8,39,'W3S27');
                     creep.memory.harvestinfo.harvestsourceid = '5bbcacba9099fc012e636192';
                 }else if(creep.memory.harvestinfo.harvestsource == 2){
+                    creep.memory.homeroom = 'W3S26';
                     creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(35,31,'W3S26');
                     creep.memory.harvestinfo.harvestsourceid = '5bbcacba9099fc012e63618d';
                 }else if(creep.memory.harvestinfo.harvestsource == 3){
+                    creep.memory.homeroom = 'W3S28';
                     creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(17,19,'W3S28');
                     creep.memory.harvestinfo.harvestsourceid = '5bbcacbb9099fc012e636194';
+                }else if(creep.memory.harvestinfo.harvestsource == 4){
+                    creep.memory.homeroom = 'W3S29';
+                    creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(41,28,'W3S29');
+                    creep.memory.harvestinfo.harvestsourceid = '5bbcacbb9099fc012e636197';
                 }else if(creep.memory.harvestinfo.harvestsource == -1){
                     creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(25,25,'W3S27');
                     creep.memory.harvestinfo.harvestsourceid = null;

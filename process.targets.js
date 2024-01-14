@@ -29,6 +29,16 @@ var getTarget = {
         return target;
     },
 
+    //find container that is not full of energy
+    findClosestContainerWithSpaceAvailable: function(object){
+        var target = object.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_CONTAINER)  && 
+                        structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+            }
+        });
+        return target;
+    },
     //find container with energy in it
     findClosestContainerWithEnergy: function(object, minAmount){
         var target = object.pos.findClosestByPath(FIND_STRUCTURES, {

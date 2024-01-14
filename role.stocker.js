@@ -73,17 +73,17 @@ var roleStocker = {
                                     processTargets.withdrawResources(creep,target);
                                 }
                             }
-                            //find the closest container with resources in it
+                            //find closest link with energy in it
                             if(!(target)){
-                                //if there is no dropped resources find a container with some energy in it
-                                var target = processTargets.findClosestContainerWithEnergy(creep,1);
+                                var target = processTargets.findClosestLinkWithEnergy(creep,50);
                                 if(target){
                                     processTargets.withdrawResources(creep,target);
                                 }
                             }
-                            //find closest link with energy in it
+                            //find the closest container with resources in it
                             if(!(target)){
-                                var target = processTargets.findClosestLinkWithEnergy(creep,50);
+                                //if there is no dropped resources find a container with some energy in it
+                                var target = processTargets.findClosestContainerWithEnergy(creep,1);
                                 if(target){
                                     processTargets.withdrawResources(creep,target);
                                 }

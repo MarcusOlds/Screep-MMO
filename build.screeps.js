@@ -69,7 +69,18 @@ var buildScreeps = {
 
                     break;
                 case 'harvester':
-                    var bodyParts = [WORK,WORK,WORK,CARRY,MOVE];
+                    var bodyParts = [];
+                    var energyLeft = energyAvailableInRoom;
+                    //dynamic production of harvest to ensure no break down in harvesting and eventual colony fallout
+                    if(energyAvailableInRoom > 300){
+                        energyLeft = energyLeft - 50;
+                        while (energyLeft >= 100 && bodyParts.length <= 50){
+                            bodyParts.push(WORK,CARRY,MOVE);
+                            energyLeft = energyLeft - 200;
+                        }
+                    }else{
+                        bodyParts.push(WORK,CARRY,MOVE);
+                    }
                     break;
                 case 'drop harvester':
                 case 'mineral harvester':
@@ -173,6 +184,7 @@ var buildScreeps = {
                         break;
                     case 'harvester':
                         var memory = {role:'harvester'};
+                        memory['subrole'] = "energy";
                         break;
                     case 'drop harvester':
                     case 'mineral harvester':
@@ -252,7 +264,7 @@ var buildScreeps = {
 
                 //generic all creeps memory
                 memory['needsAssignment'] = true;
-                memory["harvestinfo"] = {harvesting: false, harvestsource: 0};
+                memory["harvestinfo"] = {harvesting: false, harvestsource: -1};
                 memory['homeroom'] = homeRoom;
                 if(expansionScreep){
                     memory['expansioncreep']  = true;
