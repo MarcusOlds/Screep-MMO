@@ -58,7 +58,7 @@ var initializeVariables = {
         Memory.ExpansionRooms = ['W3S28','W3S29'];
         //set Expansion Room Screeps
         var ExpansionCreeps={
-            spawnName: "Spawn1",
+            spawnName: "Spawn2",
             numHarvesters: 2,
             numUpgraders: 0,
             numBuilders: 0,
@@ -66,13 +66,35 @@ var initializeVariables = {
             numTowerStockers: 0,
             numExtensionStockers: 0,
             numMaintainers: 1,
-            numClaimers: 0,
+            numClaimers: 1,
             numDropHarvesters: 0,
             numAttackers: 0,
-            numHealers: 0       
+            numHealers: 0
         }
         Memory.ExpansionCreeps = ExpansionCreeps;
         Memory.ExpansionActive = true;
+
+        //highway mining configuration
+        Memory.HighwayRooms = ['W4S30'];
+        //set screeps for the mining operation
+        var HighwayCreeps={
+            spawnName: "Spawn1",
+            numHarvesters: 0,
+            numHighwayHarvesters: 8,
+            numUpgraders: 0,
+            numBuilders: 0,
+            numStockers: 0,
+            numTowerStockers: 0,
+            numExtensionStockers: 0,
+            numMaintainers: 0,
+            numClaimers: 0,
+            numDropHarvesters: 0,
+            numAttackers: 0,
+            numHealers: 0
+        }
+        Memory.HighwayCreeps = HighwayCreeps
+        Memory.HighwayMining = true;
+
         Memory.initialize = false;
     }
 }

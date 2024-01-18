@@ -5,7 +5,7 @@
  * memory.needsAssignment = bool (This will start as true and switch once assignment below is made)
  */
 var buildScreeps = {
-    run: function(role, numRole,spawnName,energyAvailableInRoom,homeRoom,expansionScreep) {
+    run: function(role, numRole,spawnName,energyAvailableInRoom,homeRoom,expansionScreep,highwayCreep) {
         //get the number of screeps in role and room
         var screepsInRole = _.filter(Game.creeps, (creep) => creep.memory.role == role &&
         creep.memory.homeroom == homeRoom);
@@ -72,13 +72,20 @@ var buildScreeps = {
                     }
 
                     break;
+                case 'Highway Harvester':
+                    var bodyParts = [];
+                    var energyLeft = energyAvailableInRoom;
+                    if(energyAvailableInRoom > 2700){
+                            bodyParts.push(WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE);
+                            energyLeft = energyLeft - 200;
+                    }
+                    break;
                 case 'harvester':
                     var bodyParts = [];
                     var energyLeft = energyAvailableInRoom;
                     //dynamic production of harvest to ensure no break down in harvesting and eventual colony fallout
                     if(energyAvailableInRoom > 300){
-                        energyLeft = energyLeft - 50;
-                        while (energyLeft >= 100 && bodyParts.length <= 50){
+                        while (energyLeft >= 200 && bodyParts.length <= 50){
                             bodyParts.push(WORK,CARRY,MOVE);
                             energyLeft = energyLeft - 200;
                         }
@@ -195,6 +202,10 @@ var buildScreeps = {
                     case 'claimer':
                         var memory = {role: 'claimer'};
                         break;
+                    case 'Highway Harvester':
+                        var memory = {role:'Highway Harvester'};
+                        memory['subrole'] = 'Highway Harvester';
+                        break;
                     case 'harvester':
                         var memory = {role:'harvester'};
                         memory['subrole'] = "energy";
@@ -287,6 +298,11 @@ var buildScreeps = {
                 }else{
                     memory['expansioncreep'] = false;
                 }
+                if(highwayCreep){
+                    memory['highwaycreep']  = true;
+                }else{
+                    memory['highwaycreep'] = false;
+                }
                 //final creation of memory 
                 var memoryFinal = {memory};
                 
@@ -300,17 +316,33 @@ var buildScreeps = {
     buildExpansionCreep: function(room){
         expansionRoom = Memory.ExpansionCreeps;
         var energyAvailableInRoom = Game.spawns[expansionRoom.spawnName].room.energyAvailable;
-        this.run('harvester', expansionRoom.numHarvesters,expansionRoom.spawnName, energyAvailableInRoom,room,true);
-        this.run('builder', expansionRoom.numBuilders,expansionRoom.spawnName, energyAvailableInRoom,room,true);
-        this.run("upgrader",expansionRoom.numUpgraders,expansionRoom.spawnName, energyAvailableInRoom,room,true);
-        this.run("maintainer", expansionRoom.numMaintainers, expansionRoom.spawnName,energyAvailableInRoom,room,true);
-        this.run('claimer', expansionRoom.numClaimers,expansionRoom.spawnName, energyAvailableInRoom,room,true);
-        this.run("attacker", expansionRoom.numAttackers, expansionRoom.spawnName,energyAvailableInRoom,room,true);
-        this.run('drop harvester', expansionRoom.numDropHarvesters,expansionRoom.spawnName, energyAvailableInRoom,room,true);
-        this.run("stocker", expansionRoom.numStockers,expansionRoom.spawnName, energyAvailableInRoom,room,true);
-        this.run("towerstocker", expansionRoom.numTowerStockers,expansionRoom.spawnName, energyAvailableInRoom,room,true);
-        this.run("extensionstocker", expansionRoom.numExtensionStockers,expansionRoom.spawnName, energyAvailableInRoom,room,true);
-        this.run("healer", expansionRoom.numHealers,expansionRoom.spawnName, energyAvailableInRoom,room,true);
+        this.run('harvester', expansionRoom.numHarvesters,expansionRoom.spawnName, energyAvailableInRoom,room,true,false);
+        this.run('builder', expansionRoom.numBuilders,expansionRoom.spawnName, energyAvailableInRoom,room,true,false);
+        this.run("upgrader",expansionRoom.numUpgraders,expansionRoom.spawnName, energyAvailableInRoom,room,true,false);
+        this.run("maintainer", expansionRoom.numMaintainers, expansionRoom.spawnName,energyAvailableInRoom,room,true,false);
+        this.run('claimer', expansionRoom.numClaimers,expansionRoom.spawnName, energyAvailableInRoom,room,true,false);
+        this.run("attacker", expansionRoom.numAttackers, expansionRoom.spawnName,energyAvailableInRoom,room,true,false);
+        this.run('drop harvester', expansionRoom.numDropHarvesters,expansionRoom.spawnName, energyAvailableInRoom,room,true,false);
+        this.run("stocker", expansionRoom.numStockers,expansionRoom.spawnName, energyAvailableInRoom,room,true,false);
+        this.run("towerstocker", expansionRoom.numTowerStockers,expansionRoom.spawnName, energyAvailableInRoom,room,true,false);
+        this.run("extensionstocker", expansionRoom.numExtensionStockers,expansionRoom.spawnName, energyAvailableInRoom,room,true,false);
+        this.run("healer", expansionRoom.numHealers,expansionRoom.spawnName, energyAvailableInRoom,room,true,false);
+    },
+    buildHighwayCreep: function(room){
+        expansionRoom = Memory.HighwayCreeps;
+        var energyAvailableInRoom = Game.spawns[expansionRoom.spawnName].room.energyAvailable;
+        this.run('harvester', expansionRoom.numHarvesters,expansionRoom.spawnName, energyAvailableInRoom,room,false,true);
+        this.run('Highway Harvester', expansionRoom.numHighwayHarvesters,expansionRoom.spawnName, energyAvailableInRoom,room,false,true);
+        this.run('builder', expansionRoom.numBuilders,expansionRoom.spawnName, energyAvailableInRoom,room,false,true);
+        this.run("upgrader",expansionRoom.numUpgraders,expansionRoom.spawnName, energyAvailableInRoom,room,false,true);
+        this.run("maintainer", expansionRoom.numMaintainers, expansionRoom.spawnName,energyAvailableInRoom,room,false,true);
+        this.run('claimer', expansionRoom.numClaimers,expansionRoom.spawnName, energyAvailableInRoom,room,false,true);
+        this.run("attacker", expansionRoom.numAttackers, expansionRoom.spawnName,energyAvailableInRoom,room,false,true);
+        this.run('drop harvester', expansionRoom.numDropHarvesters,expansionRoom.spawnName, energyAvailableInRoom,room,false,true);
+        this.run("stocker", expansionRoom.numStockers,expansionRoom.spawnName, energyAvailableInRoom,room,false,true);
+        this.run("towerstocker", expansionRoom.numTowerStockers,expansionRoom.spawnName, energyAvailableInRoom,room,false,true);
+        this.run("extensionstocker", expansionRoom.numExtensionStockers,expansionRoom.spawnName, energyAvailableInRoom,room,false,true);
+        this.run("healer", expansionRoom.numHealers,expansionRoom.spawnName, energyAvailableInRoom,room,false,true);
     }
 };
 

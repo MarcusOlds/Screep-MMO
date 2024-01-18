@@ -181,7 +181,12 @@ var getTarget = {
             creep.moveTo(target,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});
         };
     },
-
+    //harvest a resource
+    harvestResource: function(creep,target){
+        if(creep.harvest(target) == ERR_NOT_IN_RANGE || creep.harvest(target) == ERR_NOT_FOUND || creep.harvest(target) == ERR_INVALID_TARGET) {
+            creep.moveTo(target.pos ,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});
+        }
+    },
     //send creep to withdraw energy from a target
     withdrawEnergy: function(creep,target){
         if(creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {

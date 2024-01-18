@@ -21,8 +21,10 @@ var roleDropHarvester = require('role.dropharvester');
 var roleAttacker = require('role.attacker');
 var roleMineralHarvester = require('role.mineralharvester')
 var roleHealer = require('role.healer');
+var roleHighwayHarvester = require('role.highwayharvester');
 var buildScreeps = require('build.screeps');
 var expansionRoomSpawn = require('ExpansionRoom.spawn');
+var highwayRoomSpawn = require('HighwayRoom.spawn');
 const initializeVariables = require('initialize.variables');
 
 //initialize Desired Creep Numbers by Spawn Room saved to Game Memory
@@ -40,6 +42,7 @@ module.exports.loop = function () {
     var wallStrengthGoal = Memory.minMaxes.wallStrengthGoal;
     var rampartStrengthGoal = Memory.minMaxes.rampartStengthGoal;
     var ExpansionRooms = Memory.ExpansionRooms;
+    var HighwayRooms = Memory.HighwayRooms;
     var gameTime = Game.time;
     var bucketCPU = Game.cpu.bucket;
     //reset working status of towers
@@ -73,6 +76,13 @@ module.exports.loop = function () {
         ExpansionRooms.forEach(function(expansionRoom){
             expansionRoomSpawn.spawn(expansionRoom);
         })       
+    }
+
+    //mine Highway
+    if(Memory.HighwayMining){
+        HighwayRooms.forEach(function(HighwayRoom){
+            highwayRoomSpawn.spawn(HighwayRoom);
+        })
     }
     
 
@@ -165,6 +175,9 @@ module.exports.loop = function () {
                 }
                 if(creep.memory.role == 'healer'){
                     roleHealer.run(creep);
+                }
+                if(creep.memory.role == 'Highway Harvester'){
+                    roleHighwayHarvester.run(creep);
                 }
             }
         }
