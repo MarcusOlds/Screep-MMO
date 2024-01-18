@@ -25,16 +25,18 @@ var roleDropHarvester = {
         }
         //increase TTL if no harvesting can be done
         //if the ticksToRegeneration are null or the creep is spawning set variable to 0 to avoid errors
-        if(Game.getObjectById(harvestSource).ticksToRegeneration === null){
-            var ticksToRegeneration = 0;
-        }else{
-            var ticksToRegeneration = Game.getObjectById(harvestSource).ticksToRegeneration;
-        }
-        if(ticksToRegeneration > 50 && creep.ticksToLive <= 1300 && creep.harvest(Game.getObjectById(harvestSource)) == ERR_NOT_ENOUGH_RESOURCES){
-            creep.moveTo(creep.pos.findClosestByPath(FIND_MY_SPAWNS))
-        //move to the harvest location otherwise
-        }else if(creep.pos != harvestSourceLocation){
-            creep.moveTo(harvestSourceLocation,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});
+        if(creep.memory.harvestinfo.harvestsource != -1){
+            if(Game.getObjectById(harvestSource).ticksToRegeneration === null && creep.pos.roomName != creep.memory.harvestinfo.harvestsourelocation.roomName){
+                var ticksToRegeneration = 0;
+            }else{
+                var ticksToRegeneration = Game.getObjectById(harvestSource).ticksToRegeneration;
+            }
+            if(ticksToRegeneration > 50 && creep.ticksToLive <= 1300 && creep.harvest(Game.getObjectById(harvestSource)) == ERR_NOT_ENOUGH_RESOURCES){
+                creep.moveTo(creep.pos.findClosestByPath(FIND_MY_SPAWNS))
+            //move to the harvest location otherwise
+            }else if(creep.pos != harvestSourceLocation){
+                creep.moveTo(harvestSourceLocation,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});
+            }
         }
 	}
 };

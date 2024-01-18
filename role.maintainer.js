@@ -17,32 +17,11 @@ var roleMaintainer = {
             }
 
             if(creep.memory.building) {
-
                 var closestDamagedStructure = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                    filter: (structure) => (((structure.structureType != STRUCTURE_WALL && 
-                                            structure.structureType != STRUCTURE_RAMPART) && 
-                                            structure.hits < structure.hitsMax) || 
-                                            ((structure.structureType == STRUCTURE_WALL && 
-                                            structure.hits < wallStrengthGoal) ||
-                                            (structure.structureType == STRUCTURE_RAMPART &&
-                                            structure.hits < rampartStengthGoal)))
+                    filter: (structure) => (((structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART) && structure.hits < structure.hitsMax) || 
+                                            ((structure.structureType == STRUCTURE_WALL && structure.hits < wallStrengthGoal && structure.hits != structure.hitsMax) ||
+                                            (structure.structureType == STRUCTURE_RAMPART && structure.hits < rampartStengthGoal && structure.hits != structure.hitsMax)))
                 });
-                if(!(closestDamagedStructure)){
-                    var closestDamagedStructure = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                        filter: (structure) => (((structure.structureType != STRUCTURE_WALL && 
-                                                structure.structureType != STRUCTURE_RAMPART) && 
-                                                structure.hits < structure.hitsMax) || 
-                                                ((structure.structureType == STRUCTURE_WALL && 
-                                                structure.hits < wallStrengthGoal) ||
-                                                (structure.structureType == STRUCTURE_RAMPART &&
-                                                structure.hits < rampartStengthGoal)))
-                    });
-                    if(closestDamagedStructure) {
-                        if(creep.repair(closestDamagedStructure) == ERR_NOT_IN_RANGE){
-                            creep.moveTo(closestDamagedStructure,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});
-                        };
-                    }
-                }else
                 if(closestDamagedStructure) {
                     if(creep.repair(closestDamagedStructure) == ERR_NOT_IN_RANGE){
                         creep.moveTo(closestDamagedStructure,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});

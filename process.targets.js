@@ -13,11 +13,18 @@ var getTarget = {
         }});
         return target;
     },
+    findClosestDroppedEnergy: function(object, minAmount){
+        var target = object.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {filter: (resource) => {
+            return(resource.amount >= minAmount && resource.type == RESOURCE_ENERGY);
+        }});
+        return target;
+    },
+
 
     //find closest link
     findClosestLink: function(object){
         var target = object.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) => {
-            return(structure.structureType == STRUCTURE_LINK);
+            return(structure.structureType == STRUCTURE_LINK && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0);
         }});
         return target;
     },
@@ -41,6 +48,16 @@ var getTarget = {
     },
     //find container with energy in it
     findClosestContainerWithEnergy: function(object, minAmount){
+        var target = object.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_CONTAINER)  && 
+                        structure.store.getUsedCapacity(RESOURCE_ENERGY) > minAmount;
+            }
+        });
+        return target;
+    },
+    //find container with energy in it
+    findClosestContainerWithResource: function(object, minAmount){
         var target = object.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_CONTAINER)  && 
@@ -124,6 +141,15 @@ var getTarget = {
             filter: (structure) => {
                 return (structure.structureType == STRUCTURE_TERMINAL) &&
                         structure.store.getFreeCapacity() > object.store.getUsedCapacity();
+            }
+        });
+        return target;
+    },
+    findTerminalWithOverEnergy: function(object){
+        var target = object.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_TERMINAL) &&
+                        structure.store.getUsedCapacity(RESOURCE_ENERGY) > 15000;
             }
         });
         return target;

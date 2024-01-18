@@ -26,16 +26,20 @@ var buildScreeps = {
                             energyLeft = energyLeft - 140;
                             workParts = workParts + 3
                         }
+                    }else{
+                        bodyParts.push(TOUGH,ATTACK,MOVE);
                     }
                     break;
                 case 'healer':
                     var bodyParts = [];
                     var energyLeft = energyAvailableInRoom;
-                    if(energyAvailableInRoom > 1800){
+                    if(energyAvailableInRoom >= 1800){
                         while (energyLeft >= 550 && bodyParts.length <= 50){
                             bodyParts.push(HEAL,HEAL,MOVE);
                             energyLeft = energyLeft - 550;
                         }
+                    }else{
+                        bodyParts.push(HEAL,MOVE);
                     }
                     break;
                 case 'builder':
@@ -99,7 +103,16 @@ var buildScreeps = {
                     }
                     break;
                 case 'maintainer':
-                    var bodyParts = [WORK,WORK,CARRY,CARRY,MOVE,MOVE];
+                    var bodyParts = [];
+                    var energyLeft = energyAvailableInRoom;
+                    if(energyAvailableInRoom > 300){
+                        while (energyLeft >= 200 && bodyParts.length <= 50){
+                            bodyParts.push(CARRY,WORK,MOVE);
+                            energyLeft = energyLeft - 200;
+                        }
+                    }else{
+                        bodyParts.push(WORK,CARRY,MOVE);
+                    }
                     break;
                 case 'stocker':
                 case 'towerstocker':
@@ -240,6 +253,9 @@ var buildScreeps = {
                                 break;
                             case 'Spawn2':
                                 memory['controllerid'] = '5bbcacba9099fc012e63618e'
+                                break;
+                            case 'Spawn3':
+                                memory['controllerid'] = '5bbcacc89099fc012e63631d'
                                 break;
                         }
                         break;

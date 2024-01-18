@@ -12,13 +12,9 @@ var roleTower = {
                 tower.attack(target);
             }else{
                 var target = tower.pos.findClosestByRange(FIND_STRUCTURES, {
-                    filter: (structure) => (((structure.structureType != STRUCTURE_WALL && 
-                                            structure.structureType != STRUCTURE_RAMPART) && 
-                                            structure.hits < structure.hitsMax) || 
-                                            ((structure.structureType == STRUCTURE_WALL && 
-                                            structure.hits < wallStrengthGoal) ||
-                                            (structure.structureType == STRUCTURE_RAMPART &&
-                                            structure.hits < rampartStengthGoal)))
+                    filter: (structure) => (((structure.structureType != STRUCTURE_WALL && structure.structureType != STRUCTURE_RAMPART) && structure.hits < structure.hitsMax) || 
+                                            ((structure.structureType == STRUCTURE_WALL && structure.hits < wallStrengthGoal && structure.hits != structure.hitsMax) ||
+                                            (structure.structureType == STRUCTURE_RAMPART && structure.hits < rampartStengthGoal && structure.hits != structure.hitsMax)))
                 });
                 if(target) {
                     tower.repair(target);

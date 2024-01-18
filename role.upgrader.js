@@ -25,7 +25,19 @@ var roleUpgrader = {
             }
             //}
         } else {
-            var targetContainer = getTarget.findClosestStorageWithEnergy(creep,50);
+            var targetContainer = getTarget.findClosestDroppedEnergy(creep,50);
+            if(targetContainer) {
+                getTarget.pickupResource(creep,targetContainer);
+            }
+            if(!targetContainer){
+                var targetContainer = getTarget.findClosestContainerWithEnergy(creep,50);
+            }            
+            if(!targetContainer){
+                var targetContainer = getTarget.findClosestStorageWithEnergy(creep,50);
+            }
+            if(!targetContainer){
+                var targetContainer = getTarget.findClosestRuinWithResources(creep,5);
+            }
             if(targetContainer){
                 getTarget.withdrawEnergy(creep,targetContainer);
             }

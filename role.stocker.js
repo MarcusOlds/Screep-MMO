@@ -66,7 +66,7 @@ var roleStocker = {
                                     processTargets.withdrawResources(creep,target);
                                 }
                             }
-                            //find teh closest tombstone with resources in it
+                            //find the closest tombstone with resources in it
                             if(!(target)){
                                 target = processTargets.findClosestTombstoneWithResources(creep);
                                 if(target) {
@@ -83,9 +83,16 @@ var roleStocker = {
                             //find the closest container with resources in it
                             if(!(target)){
                                 //if there is no dropped resources find a container with some energy in it
-                                var target = processTargets.findClosestContainerWithEnergy(creep,1);
+                                var target = processTargets.findClosestContainerWithEnergy(creep,100);
                                 if(target){
                                     processTargets.withdrawResources(creep,target);
+                                }
+                            }
+                            //Empty Extra Energy From Terminal
+                            if(!(target)){
+                                var target = processTargets.findTerminalWithOverEnergy(creep);
+                                if(target){
+                                    processTargets.withdrawAResource(creep,target,RESOURCE_ENERGY);
                                 }
                             }
                             if(!(target)){
@@ -100,7 +107,14 @@ var roleStocker = {
                             break;
                         case 'tower':
                         case 'extension':
+                            var target = processTargets.findClosestDroppedResource(creep,50);
+                            if(target) {
+                                processTargets.pickupResource(creep,target);
+                            }
                             var target = processTargets.findClosestStorageWithEnergy(creep,100);
+                            if(!(target)){
+                                target = processTargets.findClosestRuinWithResources(creep);
+                            }
                             if(target){
                                 processTargets.withdrawResources(creep,target);
                             }

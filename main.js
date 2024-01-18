@@ -101,6 +101,10 @@ module.exports.loop = function () {
     towers.forEach(function (tower, index){
         roleTower.run(tower,wallStrengthGoal,rampartStrengthGoal);
     });
+    towers = Game.spawns['Spawn3'].room.find(FIND_MY_STRUCTURES,{filter:{ structureType: STRUCTURE_TOWER}})
+    towers.forEach(function (tower, index){
+        roleTower.run(tower,wallStrengthGoal,rampartStrengthGoal);
+    });
     //if no towers working increase minMaxes if upgadeWalls is true
     if(Memory.minMaxes.working == false && Memory.minMaxes.upgradeWalls == true){
         roleTower.increaseMinMaxes();

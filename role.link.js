@@ -20,7 +20,7 @@ var roleLink = {
         if(!isDestination){
             var link = Game.getObjectById(linkID);
             var target = this.findTargetDestinationLink(linkID)
-            if(link.store.getUsedCapacity(RESOURCE_ENERGY) == link.store.getCapacity(RESOURCE_ENERGY) && target.store.getFreeCapacity(RESOURCE_ENERGY) > 0){
+            if(link.store.getUsedCapacity(RESOURCE_ENERGY) > 0 && target.store.getFreeCapacity(RESOURCE_ENERGY) > 0){
                 link.transferEnergy(target);
             }
         }

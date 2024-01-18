@@ -1,6 +1,6 @@
 var roleHealer = {
     run: function(creep){
-        var attackZone = new RoomPosition(3,40,'W2S26');
+        var attackZone = new RoomPosition(13,5,'W3S30');
         if(creep.pos.roomName != attackZone.roomName){
             creep.moveTo(attackZone,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});
         }else{
