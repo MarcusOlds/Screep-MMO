@@ -130,7 +130,7 @@ module.exports.loop = function () {
         for(var name in Game.creeps) {
             var creep = Game.creeps[name];
             //check if low time to live
-            if(creep.ticksToLive <= 200 && creep.room.energyAvailable >= 500){
+            if(creep.ticksToLive <= 500 && creep.room.energyAvailable >= 500){
                 //start reuping
                 creep.memory.reup = true;
             }
@@ -139,7 +139,7 @@ module.exports.loop = function () {
                 //move to the spawn
                 creep.moveTo(creep.pos.findClosestByPath(FIND_MY_SPAWNS))
                 //check if done
-                if(creep.ticksToLive >= 1300 || creep.room.energyAvailable < 350){
+                if(creep.ticksToLive >= 1300 || creep.room.energyAvailable < 300){
                     //stop reup and start working
                     creep.memory.reup = false;
                 }

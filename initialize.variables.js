@@ -52,7 +52,7 @@ var initializeVariables = {
         var spawnRooms = [Spawn1, Spawn2, Spawn3];
         Memory.spawnRooms = spawnRooms; 
         //set max wall and rampart health to stop maintainance creeps from wasting all energy on just increasing wall strength
-        Memory.minMaxes = {wallStrengthGoal: 110000, rampartStengthGoal: 3000000, working: false, upgradeWalls: false};
+        Memory.minMaxes = {wallStrengthGoal: 100, rampartStengthGoal: 300, working: false, upgradeWalls: false};
 
         //set array variable for room reservations
         Memory.ExpansionRooms = ['W3S28','W3S29'];

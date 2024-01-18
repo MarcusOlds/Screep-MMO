@@ -1,5 +1,4 @@
 //has been set to drop in nearest container
-var harvestTarget = require('harvest.target');
 var processTargets = require('process.targets');
 var roleHighwayHarvester = {
 
@@ -11,12 +10,10 @@ var roleHighwayHarvester = {
         currentRoom = creep.pos.roomName;
 
         //set harvesting
-        if(creep.store.getUsedCapacity() == 0) {
+        if(creep.store.getUsedCapacity() == 0 && creep.memory.harvestinfo.harvesting == false) {
             creep.memory.depositing = false;
-            if(creep.memory.harvestinfo.harvestsource == -1){
-                harvestTarget.run(creep);
-            }
             creep.memory.harvestinfo.harvesting = true;
+            creep.memory.reup = true;
         }
         //set depositing
         if(creep.store.getUsedCapacity() >= 50){

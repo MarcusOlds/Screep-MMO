@@ -75,9 +75,8 @@ var buildScreeps = {
                 case 'Highway Harvester':
                     var bodyParts = [];
                     var energyLeft = energyAvailableInRoom;
-                    if(energyAvailableInRoom > 2700){
-                            bodyParts.push(WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE);
-                            energyLeft = energyLeft - 200;
+                    if(energyAvailableInRoom > 2150){
+                            bodyParts.push(WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE);
                     }
                     break;
                 case 'harvester':

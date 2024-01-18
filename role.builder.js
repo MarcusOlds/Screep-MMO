@@ -62,7 +62,7 @@ var roleBuilder = {
                     }
                 //if creep is not looking for a room, then just do some work
                 }else{
-                    var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+                    var target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
                     if(target){
                         if(creep.build(target) == ERR_NOT_IN_RANGE) {
                             creep.moveTo(target,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});
@@ -71,7 +71,7 @@ var roleBuilder = {
                 }
             //if you do have a target, get to work!
             }else{
-                var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+                var target = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
                 if(target){
                     if(creep.build(target) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(target,{reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}});
