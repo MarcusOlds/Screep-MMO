@@ -5,7 +5,7 @@ var roleSpawner = {
         if(!(Game.spawns[spawnName].spawning) && Game.spawns[spawnName].room.energyAvailable >= 300){
             for(var name in Game.creeps) {
                 var creep = Game.creeps[name];
-                if(Game.spawns[spawnName].pos.inRangeTo(creep,1) && creep.ticksToLive <= 1450){
+                if(Game.spawns[spawnName].pos.inRangeTo(creep,1) && creep.memory.reup){
                     Game.spawns[spawnName].renewCreep(creep);
                 }
             }  
@@ -15,7 +15,9 @@ var roleSpawner = {
         var mineralID = Game.spawns[spawnName].room.memory.mineralid
         var controllerLevel = Game.spawns[spawnName].room.controller.level
         var mineralAmount = Game.getObjectById(mineralID).mineralAmount
-        if(mineralAmount > 0 && controllerLevel > 5){
+        var extractor = Game.spawns[spawnName].pos.findClosestByRange(FIND_STRUCTURES,
+            {filter: {structureType: STRUCTURE_EXTRACTOR}});
+        if(mineralAmount > 0 && controllerLevel > 5 && extractor && Game.spawns[spawnName].room.energyAvailable >= 1800){
             var energyAvailableInRoom = Game.spawns[spawnName].room.energyAvailable;
             buildScreeps.run('mineral harvester', 1,spawnName, energyAvailableInRoom);
         }

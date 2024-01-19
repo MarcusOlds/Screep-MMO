@@ -22,6 +22,7 @@ var roleTower = {
             }
         }
         if(target){
+            console.log("tower in room " + target.pos.roomName + " active")
             Memory.minMaxes.working = true;
         }
 	},

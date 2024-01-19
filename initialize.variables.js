@@ -24,11 +24,11 @@ var initializeVariables = {
             numUpgraders: 1,
             numBuilders: 0,
             numStockers: 1,
-            numTowerStockers: 1,
-            numExtensionStockers: 1,
+            numTowerStockers: 0,
+            numExtensionStockers: 0,
             numMaintainers: 0,
             numClaimers: 0,
-            numDropHarvesters: 1,
+            numDropHarvesters: 0,
             numAttackers: 0,
             numHealers: 0
         }
@@ -52,13 +52,13 @@ var initializeVariables = {
         var spawnRooms = [Spawn1, Spawn2, Spawn3];
         Memory.spawnRooms = spawnRooms; 
         //set max wall and rampart health to stop maintainance creeps from wasting all energy on just increasing wall strength
-        Memory.minMaxes = {wallStrengthGoal: 100, rampartStengthGoal: 300, working: false, upgradeWalls: false};
+        Memory.minMaxes = {wallStrengthGoal: 100, rampartStengthGoal: 300, working: false, upgradeWalls: true};
 
         //set array variable for room reservations
         Memory.ExpansionRooms = ['W3S28','W3S29'];
         //set Expansion Room Screeps
         var ExpansionCreeps={
-            spawnName: "Spawn2",
+            spawnName: "Spawn1",
             numHarvesters: 2,
             numUpgraders: 0,
             numBuilders: 0,
@@ -75,7 +75,7 @@ var initializeVariables = {
         Memory.ExpansionActive = true;
 
         //highway mining configuration
-        Memory.HighwayRooms = ['W4S30'];
+        Memory.HighwayRooms = [];
         //set screeps for the mining operation
         var HighwayCreeps={
             spawnName: "Spawn1",
