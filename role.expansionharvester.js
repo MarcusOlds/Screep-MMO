@@ -1,11 +1,11 @@
 //has been set to drop in nearest container
 var processTargets = require('process.targets');
-var roleHighwayHarvester = {
+var roleExpansionHarvester = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
         //set variables
-        depositRoom = Game.spawns[Memory.HighwayCreeps.spawnName].pos.roomName;
+        depositRoom = Game.spawns[Memory.ExpansionCreeps.spawnName].pos.roomName;
         miningRoom = creep.memory.homeroom;
         currentRoom = creep.pos.roomName;
 
@@ -13,10 +13,9 @@ var roleHighwayHarvester = {
         if(creep.store.getUsedCapacity() == 0 && creep.memory.harvestinfo.harvesting == false) {
             creep.memory.depositing = false;
             creep.memory.harvestinfo.harvesting = true;
-            creep.memory.reup = true;
         }
         //set depositing
-        if(creep.store.getUsedCapacity() >= 50){
+        if(creep.store.getFreeCapacity() == 0){
             creep.memory.depositing = true;
             creep.memory.harvestinfo.harvesting = false;
         }
@@ -29,7 +28,7 @@ var roleHighwayHarvester = {
                 creep.moveTo(room, {reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}})
             //if the creep is in the depositing room then find a terminal
             }else{
-                var target = processTargets.findTerminal(creep);
+                var target = processTargets.findClosestLink(creep);
                 //if no terminal find a storage location
                 if(!target){
                     var target = processTargets.findClosestStorageWithSpace(creep);
@@ -48,7 +47,7 @@ var roleHighwayHarvester = {
                 creep.moveTo(room, {reusePath: 10, visualizePathStyle: {stroke: '#FFF', lineStyle: 'solid', opacity: 1.0}})
             }else{
                 //find room resource and mine it
-                var target = creep.pos.findClosestByPath(FIND_DEPOSITS);
+                var target = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
                 if(target){
                     processTargets.harvestResource(creep,target);
                 }
@@ -57,4 +56,4 @@ var roleHighwayHarvester = {
 	}
 };
 
-module.exports = roleHighwayHarvester;
+module.exports = roleExpansionHarvester;

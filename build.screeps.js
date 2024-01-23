@@ -79,6 +79,7 @@ var buildScreeps = {
                             bodyParts.push(WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE);
                     }
                     break;
+                case 'expansion harvester':
                 case 'harvester':
                     var bodyParts = [];
                     var energyLeft = energyAvailableInRoom;
@@ -205,6 +206,10 @@ var buildScreeps = {
                         var memory = {role:'Highway Harvester'};
                         memory['subrole'] = 'Highway Harvester';
                         break;
+                    case 'expansion harvester':
+                        var memory = {role:'expansion harvester'}
+                        memory['subrole'] = "energy";
+                        break;
                     case 'harvester':
                         var memory = {role:'harvester'};
                         memory['subrole'] = "energy";
@@ -315,7 +320,7 @@ var buildScreeps = {
     buildExpansionCreep: function(room){
         expansionRoom = Memory.ExpansionCreeps;
         var energyAvailableInRoom = Game.spawns[expansionRoom.spawnName].room.energyAvailable;
-        this.run('harvester', expansionRoom.numHarvesters,expansionRoom.spawnName, energyAvailableInRoom,room,true,false);
+        this.run('expansion harvester', expansionRoom.numHarvesters,expansionRoom.spawnName, energyAvailableInRoom,room,true,false);
         this.run('builder', expansionRoom.numBuilders,expansionRoom.spawnName, energyAvailableInRoom,room,true,false);
         this.run("upgrader",expansionRoom.numUpgraders,expansionRoom.spawnName, energyAvailableInRoom,room,true,false);
         this.run("maintainer", expansionRoom.numMaintainers, expansionRoom.spawnName,energyAvailableInRoom,room,true,false);

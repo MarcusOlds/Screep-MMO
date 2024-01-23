@@ -21,6 +21,7 @@ var roleDropHarvester = require('role.dropharvester');
 var roleAttacker = require('role.attacker');
 var roleMineralHarvester = require('role.mineralharvester')
 var roleHealer = require('role.healer');
+var roleExpansionHarvester = require('role.expansionharvester');
 var roleHighwayHarvester = require('role.highwayharvester');
 var buildScreeps = require('build.screeps');
 var expansionRoomSpawn = require('ExpansionRoom.spawn');
@@ -179,9 +180,13 @@ module.exports.loop = function () {
                 if(creep.memory.role == 'Highway Harvester'){
                     roleHighwayHarvester.run(creep);
                 }
+                if(creep.memory.role == 'expansion harvester'){
+                    roleExpansionHarvester.run(creep);
+                }
             }
         }
     }
+    /*
     if(gameTime % 2000 == 0){
         targetResources = RESOURCES_ALL;
         var valuableSalesOrders = [];
@@ -197,4 +202,5 @@ module.exports.loop = function () {
         }
         console.log(JSON.stringify(valuableSalesOrders));
     }
+    */
 }
