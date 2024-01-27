@@ -38,7 +38,7 @@ var initializeVariables = {
             spawnName: "Spawn3",
             numHarvesters: 0,
             numUpgraders: 3,
-            numBuilders: 0,
+            numBuilders: 1,
             numStockers: 2,
             numTowerStockers: 1,
             numExtensionStockers: 2,

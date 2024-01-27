@@ -30,10 +30,10 @@ var roleUpgrader = {
                 getTarget.pickupResource(creep,targetContainer);
             }
             if(!targetContainer){
-                var targetContainer = getTarget.findClosestStorageWithEnergy(creep,50);
+                var targetContainer = getTarget.findClosestStorageWithEnergy(creep,500);
             }
             if(!targetContainer){
-                var targetContainer = getTarget.findClosestContainerWithEnergy(creep,50);
+                var targetContainer = getTarget.findClosestContainerWithEnergy(creep,2000);
             }            
             if(!targetContainer){
                 var targetContainer = getTarget.findClosestRuinWithResources(creep,5);
