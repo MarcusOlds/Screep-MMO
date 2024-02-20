@@ -14,30 +14,56 @@ var harvestTarget = {
         subRole = creep.memory.subrole
         switch(subRole){
             case 'mineral':
-                //set counts for each havest location
-                var numHarvestOne = 0;
-                
-                //count the harvesters assigned to each location
-                for (var name in Game.creeps){
-                    var screep = Game.creeps[name];
-                    if(screep.memory.harvestinfo.harvesting == true && screep.memory.harvestinfo.harvestsource == 1 && screep.memory.subrole == "mineral"){
-                        numHarvestOne++
-                    }
-                    
-                }
-                if(numHarvestOne < 1){
-                    creep.memory.harvestinfo.harvesting = true;
-                    creep.memory.harvestinfo.harvestsource = 1;
-                }else{
-                    creep.memory.harvestinfo.harvesting = false;
-                    creep.memory.harvestinfo.harvestsource = -1;
-                }
-
-                //set the creeps harvest location and source ID to memory
-                if(creep.memory.harvestinfo.harvestsource == 1){
-                    
-                    creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(37,36,'W3S27');
-                    creep.memory.harvestinfo.harvestsourceid = '5bbcb2b940062e4259e93ced';
+                switch(creep.memory.homeroom){
+                    case 'W3S27':
+                        creep.memory.harvestinfo.harvesting = true;
+                        creep.memory.harvestinfo.harvestsource = 1;
+                        creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(37,36,'W3S27');
+                        creep.memory.harvestinfo.harvestsourceid = '5bbcb2b940062e4259e93ced';
+                        break;
+                    case 'W3S26':
+                        creep.memory.harvestinfo.harvesting = true;
+                        creep.memory.harvestinfo.harvestsource = 2;
+                        var count = 0;
+                        for (var name in Game.creeps){
+                            var screep = Game.creeps[name];
+                            if(screep.memory.homeroom == 'W3S26' && screep.memory.harvestinfo.harvestsource == 2 && screep.memory.subrole == 'mineral'){
+                                count++
+                            }
+                        }
+                        console.log(JSON.stringify(count));
+                        if(count == 1){
+                            creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(44,12,'W3S26');
+                        }
+                        if(count == 2){
+                            creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(43,11,'W3S26');
+                        }
+                        if(count == 3){
+                            creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(43,12,'W3S26');
+                        }
+                        creep.memory.harvestinfo.harvestsourceid = '5bbcb2b940062e4259e93cec';
+                        break;
+                    case 'W2S29':
+                        creep.memory.harvestinfo.harvesting = true;
+                        creep.memory.harvestinfo.harvestsource = 3;
+                        var count = 0;
+                        for (var name in Game.creeps){
+                            var screep = Game.creeps[name];
+                            if(screep.memory.homeroom == 'W2S29' && screep.memory.harvestinfo.harvestsource == 3 && screep.memory.subrole == 'mineral'){
+                                count++
+                            }
+                        }
+                        if(count == 1){
+                            creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(5,13,'W2S29');
+                        }
+                        if(count == 2){
+                            creep.memory.harvestinfo.harvestsourcelocation = new RoomPosition(6,13,'W2S29');
+                        }
+                        creep.memory.harvestinfo.harvestsourceid = '5bbcb2c340062e4259e93d5b';
+                        break;
+                    default:
+                        creep.memory.harvestinfo.harvesting = false;
+                        creep.memory.harvestinfo.harvestsource = -1;
                 }
                 break;
             case 'energy':
@@ -131,7 +157,6 @@ var harvestTarget = {
                 }
                 break;
         }
-        
 	}
 };
 

@@ -145,6 +145,15 @@ var getTarget = {
         });
         return target;
     },
+    findFactory: function(object){
+        var target = object.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: (structure) => {
+                return (structure.structureType == STRUCTURE_FACTORY) &&
+                        structure.store.getFreeCapacity() > object.store.getUsedCapacity();
+            }
+        });
+        return target;
+    },
     findTerminalWithOverEnergy: function(object){
         var target = object.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: (structure) => {

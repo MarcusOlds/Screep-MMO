@@ -6,6 +6,15 @@
  */
 var buildScreeps = {
     run: function(role, numRole,spawnName,energyAvailableInRoom,homeRoom,expansionScreep,highwayCreep) {
+        /*
+        console.log(JSON.stringify(role));
+        console.log(JSON.stringify(numRole));
+        console.log(JSON.stringify(spawnName));
+        console.log(JSON.stringify(energyAvailableInRoom));
+        console.log(JSON.stringify(homeRoom));
+        console.log(JSON.stringify(expansionScreep));
+        console.log(JSON.stringify(highwayCreep));
+        */
         //get the number of screeps in role and room
         var screepsInRole = _.filter(Game.creeps, (creep) => creep.memory.role == role &&
         creep.memory.homeroom == homeRoom);
@@ -21,7 +30,7 @@ var buildScreeps = {
                     if(energyAvailableInRoom >= 1800){
                         var workParts = 0;
                         energyLeft = energyAvailableInRoom;
-                        while (energyLeft >= 140 && workParts <= 50){
+                        while (energyLeft >= 140 && workParts <= 47){
                             bodyParts.push(TOUGH,ATTACK,MOVE);
                             energyLeft = energyLeft - 140;
                             workParts = workParts + 3
@@ -34,7 +43,7 @@ var buildScreeps = {
                     var bodyParts = [];
                     var energyLeft = energyAvailableInRoom;
                     if(energyAvailableInRoom >= 1800){
-                        while (energyLeft >= 550 && bodyParts.length <= 50){
+                        while (energyLeft >= 550 && bodyParts.length <= 47){
                             bodyParts.push(HEAL,HEAL,MOVE);
                             energyLeft = energyLeft - 550;
                         }
@@ -47,7 +56,7 @@ var buildScreeps = {
                     var bodyParts = [];
                     var energyLeft = energyAvailableInRoom;
                     if(energyAvailableInRoom > 300){
-                        while (energyLeft >= 250 && bodyParts.length <= 50){
+                        while (energyLeft >= 250 && bodyParts.length <= 47){
                             bodyParts.push(WORK,CARRY,CARRY,MOVE);
                             energyLeft = energyLeft - 250;
                         }
@@ -73,19 +82,19 @@ var buildScreeps = {
 
                     break;
                 case 'Highway Harvester':
+                case 'expansion harvester':
                     var bodyParts = [];
                     var energyLeft = energyAvailableInRoom;
-                    if(energyAvailableInRoom > 2150){
-                            bodyParts.push(WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE);
-                    }
+                    if(energyAvailableInRoom > 1600){
+                            bodyParts.push(WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE);
+                    }                    
                     break;
-                case 'expansion harvester':
                 case 'harvester':
                     var bodyParts = [];
                     var energyLeft = energyAvailableInRoom;
                     //dynamic production of harvest to ensure no break down in harvesting and eventual colony fallout
                     if(energyAvailableInRoom > 300){
-                        while (energyLeft >= 200 && bodyParts.length <= 50){
+                        while (energyLeft >= 200 && bodyParts.length <= 47){
                             bodyParts.push(WORK,CARRY,MOVE);
                             energyLeft = energyLeft - 200;
                         }
@@ -101,7 +110,7 @@ var buildScreeps = {
                     if(energyAvailableInRoom > 300){
                         bodyParts.push(MOVE);
                         energyLeft = energyLeft - 50;
-                        while (energyLeft >= 100 && bodyParts.length <= 50){
+                        while (energyLeft >= 100 && bodyParts.length <= 12){
                             bodyParts.push(WORK);
                             energyLeft = energyLeft - 100;
                         }
@@ -113,7 +122,7 @@ var buildScreeps = {
                     var bodyParts = [];
                     var energyLeft = energyAvailableInRoom;
                     if(energyAvailableInRoom > 300){
-                        while (energyLeft >= 200 && bodyParts.length <= 50){
+                        while (energyLeft >= 200 && bodyParts.length <= 47){
                             bodyParts.push(CARRY,WORK,MOVE);
                             energyLeft = energyLeft - 200;
                         }
@@ -128,7 +137,7 @@ var buildScreeps = {
                     var energyLeft = energyAvailableInRoom;
                     //dynamic Production of Stockers to ensure no break down of economy and colony fallout
                     if(energyAvailableInRoom > 300){
-                        while (energyLeft >= 150 && bodyParts.length <= 50){
+                        while (energyLeft >= 150 && bodyParts.length <= 47){
                             bodyParts.push(CARRY,CARRY,MOVE);
                             energyLeft = energyLeft - 150;
                         }
@@ -142,7 +151,7 @@ var buildScreeps = {
                     var energyLeft = energyAvailableInRoom;
                     //dynamic Production of Stockers to ensure no break down of economy and colony fallout
                     if(energyAvailableInRoom > 400){
-                        while (energyLeft >= 200 && bodyParts.length <= 50){
+                        while (energyLeft >= 200 && bodyParts.length <= 47){
                             bodyParts.push(WORK,CARRY,MOVE);
                             energyLeft = energyLeft - 200;
                         }
@@ -311,6 +320,8 @@ var buildScreeps = {
                 var memoryFinal = {memory};
                 
                 if(screepsInRole.length < numRole && energyAvailableInRoom >= energyNeeded) {
+                    
+                    console.log(JSON.stringify(bodyParts) + " test");
                     var newName = role + Game.time;
                     Game.spawns[spawnName].spawnCreep(bodyParts, newName, memoryFinal);
                 }

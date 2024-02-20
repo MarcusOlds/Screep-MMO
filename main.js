@@ -58,17 +58,17 @@ module.exports.loop = function () {
         spawnRooms.forEach(function (spawnRoom, index){
             var energyAvailableInRoom = Game.spawns[spawnRoom.spawnName].room.energyAvailable;
             console.log('Energy Available in '+ spawnRoom.spawnName + " " + energyAvailableInRoom)
-            buildScreeps.run('harvester', spawnRoom.numHarvesters,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false);
-            buildScreeps.run('builder', spawnRoom.numBuilders,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false);
-            buildScreeps.run("upgrader",spawnRoom.numUpgraders,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false);
-            buildScreeps.run("maintainer", spawnRoom.numMaintainers, spawnRoom.spawnName,energyAvailableInRoom, spawnRoom.roomName,false);
-            buildScreeps.run('claimer', spawnRoom.numClaimers,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false);
-            buildScreeps.run("attacker", spawnRoom.numAttackers, spawnRoom.spawnName,energyAvailableInRoom, spawnRoom.roomName,false);
-            buildScreeps.run('drop harvester', spawnRoom.numDropHarvesters,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false);
-            buildScreeps.run("stocker", spawnRoom.numStockers,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false);
-            buildScreeps.run("towerstocker", spawnRoom.numTowerStockers,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false);
-            buildScreeps.run("extensionstocker", spawnRoom.numExtensionStockers,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false);
-            buildScreeps.run("healer", spawnRoom.numHealers,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false);
+            buildScreeps.run('harvester', spawnRoom.numHarvesters,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false,false);
+            buildScreeps.run('builder', spawnRoom.numBuilders,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false,false);
+            buildScreeps.run("upgrader",spawnRoom.numUpgraders,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false,false);
+            buildScreeps.run("maintainer", spawnRoom.numMaintainers, spawnRoom.spawnName,energyAvailableInRoom, spawnRoom.roomName,false,false);
+            buildScreeps.run('claimer', spawnRoom.numClaimers,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false,false);
+            buildScreeps.run("attacker", spawnRoom.numAttackers, spawnRoom.spawnName,energyAvailableInRoom, spawnRoom.roomName,false,false);
+            buildScreeps.run('drop harvester', spawnRoom.numDropHarvesters,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false,false);
+            buildScreeps.run("stocker", spawnRoom.numStockers,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false,false);
+            buildScreeps.run("towerstocker", spawnRoom.numTowerStockers,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false,false);
+            buildScreeps.run("extensionstocker", spawnRoom.numExtensionStockers,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false,false);
+            buildScreeps.run("healer", spawnRoom.numHealers,spawnRoom.spawnName, energyAvailableInRoom, spawnRoom.roomName,false,false);
         });
     };
     //expand to a new room if ExpansionActive is set
@@ -95,12 +95,18 @@ module.exports.loop = function () {
             console.log('Clearing non-existing creep memory:', name);
         }
     }
-    //spawner check for creeps near by to renew them
+    //spawner check for creeps near by to renew and minerals on main Spawners
     spawnRooms.forEach(function (spawnRoom, index){
         roleSpawner.CheckForRenew(spawnRoom.spawnName);
         roleSpawner.CheckForMineral(spawnRoom.spawnName);
+        roleSpawner.checkForFactory(spawnRoom.spawnName);
     });
-    
+    //secondary spawnercheck for renew
+    spawnRooms.forEach(function (spawnRoom, index){
+        if(spawnRoom.secondarySpawn){
+            roleSpawner.CheckForRenew(spawnRoom.secondarySpawn);
+        }
+    });
 
     //tower logic 
     //needs a lot of work its still not dynamic at all

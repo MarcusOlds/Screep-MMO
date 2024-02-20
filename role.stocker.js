@@ -5,16 +5,25 @@ var roleStocker = {
         creep.memory.delivering = true;
         creep.memory.pickingup = false;
         creep.memory.stockingterminal = false;
+        creep.memory.stockingfactory = false;
     },
     setToPickingUp: function(creep){
         creep.memory.delivering = false;
         creep.memory.pickingup = true;
         creep.memory.stockingterminal = false;
+        creep.memory.stockingfactory = false;
     },
     setToStockingTerminal: function(creep){
         creep.memory.delivering = false;
         creep.memory.pickingup = false;
+        creep.memory.stockingfactory = false;
         creep.memory.stockingterminal = true;       
+    },
+    setToStockingFactory: function(creep){
+        creep.memory.delivering = false;
+        creep.memory.pickingup = false;
+        creep.memory.stockingterminal = false;
+        creep.memory.stockingfactory = true;
     },
     setTask: function(creep){
         //delivering
@@ -25,7 +34,7 @@ var roleStocker = {
         if(creep.store.getUsedCapacity() == 0){
             this.setToPickingUp(creep);
         }
-        if(!(creep.memory.delivering) && !(creep.memory.pickingup)){
+        if(!(creep.memory.delivering) && !(creep.memory.pickingup) && !(creep.memory.stockingterminal) && !(creep.memory.stockingfactory)){
             this.setToPickingUp(creep);
         }
     },
@@ -45,7 +54,7 @@ var roleStocker = {
                 }
             }else{
                 //set the task
-                if(!(creep.memory.stockingterminal)){
+                if(!(creep.memory.stockingterminal) && !(creep.memory.stockingfactory)){
                     this.setTask(creep);
                 }
 
@@ -80,10 +89,18 @@ var roleStocker = {
                                     processTargets.withdrawResources(creep,target);
                                 }
                             }
-                            //find the closest container with resources in it
+                            //find the closest container with energy in it
                             if(!(target)){
                                 //if there is no dropped resources find a container with some energy in it
                                 var target = processTargets.findClosestContainerWithEnergy(creep,100);
+                                if(target){
+                                    processTargets.withdrawResources(creep,target);
+                                }
+                            }
+                            //find the closest container with resources in it
+                            if(!(target)){
+                                //if there is no dropped resources find a container with some energy in it
+                                var target = processTargets.findClosestContainerWithResource(creep,1000);
                                 if(target){
                                     processTargets.withdrawResources(creep,target);
                                 }
@@ -96,10 +113,20 @@ var roleStocker = {
                                 }
                             }
                             if(!(target)){
+                                //stocking factory with Resource
+                                roomResource = processTargets.getRoomResource(creep);
+                                factory = processTargets.findFactory(creep);
+                                storage = processTargets.findClosestStorageWithAResource(creep,500,roomResource);
+                                if(storage && factory){
+                                    this.setToStockingFactory(creep);
+                                    target = "found"
+                                }
+                            }
+                            if(!(target)){
                                 //stockingTerminal
                                 roomResource = processTargets.getRoomResource(creep);
                                 terminal = processTargets.findTerminal(creep);
-                                storage = processTargets.findClosestStorageWithAResource(creep,100,roomResource);
+                                storage = processTargets.findClosestStorageWithAResource(creep,500,roomResource);
                                 if(storage){
                                     this.setToStockingTerminal(creep);
                                 }
@@ -128,6 +155,8 @@ var roleStocker = {
                         var target = processTargets.findClosestStorageWithAResource(creep,1000,resource)
                         if(target){
                             processTargets.withdrawAResource(creep,target,resource);
+                        }else{
+                            creep.memory.stockingterminal = false;
                         }
                     }else{
                         var target = processTargets.findTerminal(creep)
@@ -135,9 +164,30 @@ var roleStocker = {
                             processTargets.TransferAResource(creep,target,resource);
                         }
                     }
-                    var target = processTargets.findClosestStorageWithAResource(creep,1000,resource)
-                    if(!(target)){
-                        creep.memory.stockingterminal = false;
+                    //var target = processTargets.findClosestStorageWithAResource(creep,1000,resource)
+                    //if(!(target)){
+                    //    creep.memory.stockingterminal = false;
+                    //}
+                }
+                if(creep.memory.stockingfactory){
+                    //get the mats
+                    resource = processTargets.getRoomResource(creep);
+                    if(creep.store.getUsedCapacity(resource) == 0){
+                        var target = processTargets.findClosestStorageWithAResource(creep,500,resource)
+                        if(target){
+                            processTargets.withdrawAResource(creep,target,resource);
+                        }else{
+                            creep.memory.stockingfactory = false;
+                        }
+                    }else{
+                        console.log(JSON.stringify(target))
+                        var target = processTargets.findFactory(creep)
+                        if(target){
+                            processTargets.TransferAResource(creep,target,resource);
+                        }
+                        if(creep.store.getUsedCapacity(resource)==0){
+                            creep.memory.stockingfactory = false;
+                        }
                     }
                 }
                 if(creep.memory.delivering){
